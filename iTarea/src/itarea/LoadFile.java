@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package itarea;
 
@@ -38,7 +33,7 @@ public class LoadFile
             while(aux != null)
             //Este repite el proceso de lectura por si el archivo viene en varias lineas.
             {
-                _read = _read + aux+ "/";
+                _read = _read + removeSpace(aux) + "/";
                 aux = _readBuffer.readLine();
                 //Si la variable aux aún tiene datos se guardan sino se sale del ciclo.
             }
@@ -52,5 +47,18 @@ public class LoadFile
             System.out.println("Error:" + e.getMessage());
         }  
         return _read;
+    }
+    
+    private String removeSpace(String pWord)
+    {
+        String aux = "";
+        for(int i = 0; i < pWord.length(); i++)
+        {
+            if(!" ".equals(Character.toString(pWord.charAt(i))))
+            {
+                aux = aux + Character.toString(pWord.charAt(i));
+            }
+        }
+        return aux;
     }
 }

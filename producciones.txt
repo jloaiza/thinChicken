@@ -1,6 +1,19 @@
-MAMA->a
-HOLA->ab
-JAJA->aab
-NO->bb
-SIRVIO->b
-
+     A- >   w h i l   e (  a z = = t  rue);
+B - >while  (az = =t    r  ue)instruc  ci      on  e s    ;
+C -> w hile(az==true){ instrucciones;}
+ D-> while(aaz==true);  
+E->w  h i le  (aaz==true)inst rucciones;
+F->w hile(  a az==  true){instrucciones;}
+  G->w hi       le(bz= = true) ;
+H->w hil e(bz = =  true)instruc ciones;
+I -> wh ile (b  z==t r ue ) { i n struccion     e  s ;}
+J-> whil e   (b az=  =true);
+K->wh i   le(b a z= = true)instrucciones;
+L->w hi  le(b az =  = t r u e ) {i n s t r u c c i o n es ; }
+M- >whi l e(c z== t   rue);
+ N->whi le( c  z==tr   u e)ins trucciones;
+O->whil e( cz ==true){ i nstrucciones;}
+P->wh    ile(c  az == true);
+Q->whi le(ca z== t rue)instruccione  s;
+       R->wh    ile( ca z= =true  ){ in s t r u ccion es;}
+R ->wh ile(az== true);instrucciones 

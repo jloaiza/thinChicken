@@ -6,6 +6,7 @@
 
 package itarea;
 
+import automata.Automata;
 import structures.Queue;
 
 /**
@@ -19,20 +20,19 @@ public class AssessAutomata
     private SaveFile _exitFile = new SaveFile();
     private Queue _queue = new Queue();
     private String _readFile;
-    
-    AssessAutomata(String pDirection)
-    {
-        _readFile = _entryFile.readFile(pDirection);
-        //NO
-        System.out.println(_readFile);
-        //NO
-    }
-    
+    private String _direction;
+   
     public void start()
     {
+        loadFile();
         startAssess(_readFile);
         writeExitFile();
         _queue.clear();
+    }
+    
+    private void loadFile()
+    {
+        _readFile = _entryFile.readFile(_direction);
     }
     
     private void startAssess(String pRead)
@@ -41,7 +41,7 @@ public class AssessAutomata
         String[] assess = pRead.split("/");
         for (int i = 1; i < assess.length; i++) 
         {
-            //send = Automata.lineAsses(asses); SI
+            send = Automata.getInstance().evaluate(assess[i]);
             if (send == true)
             {
                 _queue.enqueue("OK");
@@ -60,9 +60,14 @@ public class AssessAutomata
         {
             finalassess = finalassess + _queue.dequeue() + "\n";
         }
-        _exitFile.writeFile("/root/Desktop/ITarea/salida.txt", finalassess);
+        _exitFile.writeFile("salida.txt", finalassess);
         //NO
         System.out.println(finalassess);
         //NO
+    }
+    
+    public void setDirection(String pDirection)
+    {
+        _direction = pDirection;
     }
 }

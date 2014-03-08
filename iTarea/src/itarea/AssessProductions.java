@@ -12,63 +12,51 @@ package itarea;
  */
 public class AssessProductions 
 {
-    private String _entryString = "";
     private String _readFile;
-    private String _alphabetString = "";
+    private String _finalGenerate = "";
+    private String _directionAutomata;
+    private String _directionEntry;
+    private String _directionExit;
+    private String _directionProductions;
     private String[] _alphabetSplit;
-    private String[] _entrySplitString;
-    private String _exitString = "";
+    private String[] _entrySplitString;  
     private String[] _exitSplitString;
-    private String _inputString = "";
     private String[] _inputSplitString;
-    private String _productions = "";
     private String[] _splitProductions;
     private String[] _temporaryProductions;
-    String _finalGenerate = "";
     private LoadFile _entryFile = new LoadFile();
     private LoadFile _exitFile = new LoadFile();
     private LoadFile _productionsFile = new LoadFile();
     private LoadFile _automataFile = new LoadFile();
-    private SaveFile _generateFile = new SaveFile();
-    
-    AssessProductions(String pDirectionAutomata, String pDirectionEntry, String pDirectionExit, String pDirectionProductions)
-    {
-         _readFile = _automataFile.readFile(pDirectionAutomata);
-        _entryString = _entryFile.readFile(pDirectionEntry);
-        _exitString = _exitFile.readFile(pDirectionExit);
-        _productions = _productionsFile.readFile(pDirectionProductions);
-        _splitProductions = _productions.split("/");
-        //NO
-        System.out.println(_entryString);
-        System.out.println(_exitString);
-        System.out.println(_productions);
-        System.out.println(_splitProductions[1]);
-        //NO
-    }
     
     public void start()
     {
         createInputString();
         createAlphabet();
         startAssess();
-        writeFile();
+        sendFile();
         _finalGenerate = "";
+        _temporaryProductions = null;
+        _inputSplitString = null;
     }
     
     private void createInputString()
     {
-        _entrySplitString = _entryString.split("/");
-        _exitSplitString = _exitString.split("/");
+        String input = "";
+        _readFile = _automataFile.readFile(_directionAutomata);
+        _entrySplitString = _entryFile.readFile(_directionEntry).split("/");
+        _exitSplitString = _exitFile.readFile(_directionExit).split("/");
+        _splitProductions = _productionsFile.readFile(_directionProductions).split("/");
         for(int i = 0; i < _entrySplitString.length; i++)
         {
             if("OK".equals(_exitSplitString[i]))
             {
-                _inputString = _inputString + _entrySplitString[i] + "/";
+                input = input + _entrySplitString[i] + "/";
             }
         }
-        _inputSplitString = _inputString.split("/");
+        _inputSplitString = input.split("/");
         //NO
-        System.out.println(_inputString);
+        System.out.println(input);
         //NO
     }
     
@@ -103,15 +91,7 @@ public class AssessProductions
                 auxsplit = extractProduction(auxcharacter);
                 if (isEmptyArray(auxsplit))
                 {
-                    String finalproduction = "";
-                    if(auxcharacter.length() == 1 && !isInAlphabet(auxcharacter))
-                    {
-                        finalproduction = "";
-                    }
-                    else
-                    {
-                        finalproduction = extractProductionArray(_temporaryProductions);
-                    }
+                    String finalproduction = extractProductionArray(_temporaryProductions);
                     if(!"".equals(finalproduction))
                     {
                         System.out.println("J VALE: " + j);
@@ -216,19 +196,26 @@ public class AssessProductions
     
     private String extractProductionArray(String[] pArray)
     {
-        for(int j = 0; j < pArray.length; j++)
+        if(isEmptyArray(pArray))
         {
-            pArray[j] = giveMeProduction(pArray[j]);
+            return "";
         }
-        String aux = pArray[0];
-        for(int i = 0; i < pArray.length; i++)
+        else
         {
-            if(pArray[i].length() < aux.length())
+            for(int j = 0; j < pArray.length; j++)
             {
-                aux = pArray[i];
+                pArray[j] = giveMeProduction(pArray[j]);
             }
+            String aux = pArray[0];
+            for(int i = 0; i < pArray.length; i++)
+            {
+                if(pArray[i].length() < aux.length())
+                {
+                    aux = pArray[i];
+                }
+            }
+            return giveMeValueProduction(aux);
         }
-        return giveMeValueProduction(aux);
     }
     
     private String ultimateProduction(String pLine)
@@ -256,23 +243,26 @@ public class AssessProductions
             counter++;
         }
         counter++;
-        while (!"}".equals(Character.toString(_readFile.charAt(counter))))
+        for(int i = counter; i < _readFile.length(); i++)
         {
-            if (",".equals(Character.toString(_readFile.charAt(counter))))
+            if("}".equals(Character.toString(_readFile.charAt(i))) && !",".equals(Character.toString(_readFile.charAt(i-1))))
             {
-                _alphabetString = _alphabetString + alphabet + "/";
-                alphabet = "";
-                counter++;
+                break;
+            }
+            else if (",".equals(Character.toString(_readFile.charAt(i))))
+            {
+                System.out.println("ALPHABETO: " + alphabet);
+                alphabet = alphabet + "/";
+                System.out.println(alphabet);
             }
             else
             {
-                alphabet = alphabet + Character.toString(_readFile.charAt(counter));
-                counter++;
+                alphabet = alphabet + Character.toString(_readFile.charAt(i));
             }
         }
-        _alphabetString = _alphabetString + alphabet + "/";
-        System.out.println("ALFABETO FINAL: " + _alphabetString);
-        _alphabetSplit = _alphabetString.split("/");
+        alphabet = alphabet + "/";
+        System.out.println("ALFABETO FINAL: " + alphabet);
+        _alphabetSplit = alphabet.split("/");
     }
     
     private int giveMeAWord(String pChain, int pIndex)
@@ -296,9 +286,23 @@ public class AssessProductions
         }
         if(!isInAlphabet(aux))
         {
-                index = pIndex + 1;
+            String remove = removeWords(aux);
+            System.out.println("FUNCIONA: " + remove);
+            index = pIndex + remove.length() +1;
         }
         return index;
+    }
+    
+    private String removeWords(String pWord)
+    {
+        for(int i = 0; i < _alphabetSplit.length; i++)
+        {
+            if(pWord.contains(_alphabetSplit[i]))
+            {
+                pWord = pWord.replaceAll(_alphabetSplit[i], "");
+            }
+        }
+        return pWord;
     }
     
     private boolean isInAlphabet(String pWord)
@@ -468,7 +472,7 @@ public class AssessProductions
         return aux;
     }
     
-    public int[] sortArray(int[] pArray)
+    private int[] sortArray(int[] pArray)
     {
         int aux;
         for (int i = 0; i < pArray.length - 1; i++) 
@@ -498,19 +502,6 @@ public class AssessProductions
         return counter;
     }
     
-    private boolean hasProhibitedCharacters(String pWord)
-    {
-        boolean flag = false;
-        for(int i = 0; i < pWord.length(); i++)
-        {
-            if(!isInAlphabet(Character.toString(pWord.charAt(i))))
-            {
-                flag = true;
-            }
-        }
-        return flag;
-    }
-    
     private String aplyModule(String[] pModules, int pNumber)
     {
         String auxfinal = "";
@@ -532,9 +523,28 @@ public class AssessProductions
         
     }
     
-    private void writeFile()
+    public void setDirectionAutomata(String pDirectionAutomata) 
     {
-        _generateFile.writeFile("/root/Desktop/ITarea/generado.txt", _finalGenerate);
+        _directionAutomata = pDirectionAutomata;
+    }
+
+    public void setDirectionEntry(String pDirectionEntry) 
+    {
+        _directionEntry = pDirectionEntry;
+    }
+
+    public void setDirectionExit(String pDirectionExit) 
+    {
+        _directionExit = pDirectionExit;
+    }
+
+    public void setDirectionProductions(String pDirectionProductions) 
+    {
+        _directionProductions = pDirectionProductions;
     }
     
+    private void sendFile()
+    {
+        //enviar;
+    }
 }
