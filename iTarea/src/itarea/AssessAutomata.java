@@ -22,7 +22,7 @@ public class AssessAutomata
     private String _readFile;
     private String _direction;
    
-    public void start()
+    public synchronized void start()
     {
         loadFile();
         startAssess(_readFile);

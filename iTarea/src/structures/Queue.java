@@ -24,6 +24,7 @@ public class Queue
     public void clear()
     {
         _top = null;
+        _tail = null;
     }
     
     public boolean isEmpty()
