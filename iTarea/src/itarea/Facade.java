@@ -81,10 +81,6 @@ public class Facade {
         _startWindow.getAutoHandler().setStateColor(pID, GUIAutoHandler.GOOD_STATE_COLOR);
     }
     
-    public void guiSetEntryText(String pEntry){
-        _startWindow.setEntryText(pEntry);
-    }
-    
     public void guiSetExitText(String pExit){
         _startWindow.setExitText(pExit);
     }
@@ -109,7 +105,47 @@ public class Facade {
         _startWindow.getAutoHandler().addConnection(pStartState, pFinalState, pKey);
     }
     
-    public void guiShowAutomata(){
+    public void loadAutomata(){
+        //_automata.clear();
+        LoadAutomata load = new LoadAutomata();
+        load.setDirection(PathRegister.AUTOMATA_PATH);
+        load.load();
         _automata.showMe();
+    }
+    
+    public String loadEntry(){
+        LoadFile lf = new LoadFile();
+        return lf.readFile(PathRegister.ENTRY_PATH);
+    }
+    
+    public void evaluateEntry(boolean pDebugMode){
+        _automata.setOnDebugMode(pDebugMode);
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                AssessAutomata evaluate = new AssessAutomata();
+                evaluate.setDirection(PathRegister.ENTRY_PATH);
+                String exit = evaluate.start();
+                _startWindow.setExitText(exit);
+        // FALTAN COSAS
+            }
+        }).start();
+    }
+    
+    public void setProdPath(String pPath){
+        PathRegister.PRODUCTIONS_PATH = pPath;
+    }
+    
+    public void setExitPath(String pPath){
+        PathRegister.EXIT_PATH = pPath;
+    }
+    
+    public void setAutomataPath(String pPath){
+        PathRegister.AUTOMATA_PATH = pPath;
+    }
+    
+    public void setEntryPath(String pPath){
+        PathRegister.ENTRY_PATH = pPath;
     }
 }

@@ -22,12 +22,13 @@ public class AssessAutomata
     private String _readFile;
     private String _direction;
    
-    public synchronized void start()
+    public synchronized String start()
     {
         loadFile();
         startAssess(_readFile);
-        writeExitFile();
+        String toReturn = getExitFile();
         resetAll();
+        return toReturn;
     }
     
     private void resetAll()
@@ -63,17 +64,14 @@ public class AssessAutomata
         }
     }
     
-    private void writeExitFile()
+    private String getExitFile()
     {
         String finalassess = "";
         while(!_queue.isEmpty())
         {
             finalassess = finalassess + _queue.dequeue() + "\n";
         }
-        _exitFile.writeFile("/root/Desktop/Proyecto/salida.txt", finalassess);
-        //NO
-        System.out.println(finalassess);
-        //NO
+        return finalassess;
     }
     
     public void setDirection(String pDirection)

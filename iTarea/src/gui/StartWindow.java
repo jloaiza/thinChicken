@@ -6,6 +6,7 @@
 
 package gui;
 
+import itarea.Facade;
 import itarea.LoadFile;
 import itarea.PathRegister;
 import itarea.SaveFile;
@@ -82,16 +83,14 @@ public final class StartWindow extends javax.swing.JFrame {
             
     }
     
-    public void setEntryText(String pEntry){
-        textEntry.setText(pEntry);
-    }
-    
     public void setExitText(String pExit){
-        textExit.setText(pExit);
+        textExit.setText("");
+        textExit.insert(pExit, 0);
     }
     
     public void setProdText(String pProd){
-        textProd.setText(pProd);
+        textProd.setText("");
+        textProd.insert(pProd, 0);
     }
     
     
@@ -193,6 +192,11 @@ public final class StartWindow extends javax.swing.JFrame {
 
         bttOpenAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttOpen.png"))); // NOI18N
         bttOpenAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttOpenAuto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttOpenAutoMouseClicked(evt);
+            }
+        });
         jLayeredPane1.add(bttOpenAuto);
         bttOpenAuto.setBounds(564, 41, 27, 24);
 
@@ -225,6 +229,11 @@ public final class StartWindow extends javax.swing.JFrame {
         bttCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttCompile.png"))); // NOI18N
         bttCompile.setToolTipText("");
         bttCompile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttCompile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttCompileMouseClicked(evt);
+            }
+        });
         jLayeredPane1.add(bttCompile);
         bttCompile.setBounds(150, 43, 91, 20);
 
@@ -508,14 +517,11 @@ public final class StartWindow extends javax.swing.JFrame {
         
         File file = loadFilePathDialog("Abrir entrada", Utils.getTxtFilter(), "entrada.txt", false);
         if (file != null){
-            if (!file.exists() || file.getName().toLowerCase().compareTo("entrada.txt") != 0){
-                JOptionPane.showMessageDialog(null, "Archivo de entrada invalido o no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            if (!file.exists()){
+                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                PathRegister.ENTRY_PATH = file.getAbsolutePath();
-                LoadFile lf = new LoadFile();
-                String readed = lf.readFile(file.getAbsolutePath());
-                textEntry.setText("");
-                textEntry.insert(readed, 0);
+                Facade.getInstance().setEntryPath(file.getAbsolutePath());
+                setEntryText(Facade.getInstance().loadEntry());
             }
         }
         
@@ -532,6 +538,28 @@ public final class StartWindow extends javax.swing.JFrame {
     private void bttSaveProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveProdMouseClicked
         
     }//GEN-LAST:event_bttSaveProdMouseClicked
+
+    private void bttOpenAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenAutoMouseClicked
+        File file = loadFilePathDialog("Abrir automata", Utils.getTxtFilter(), "automata.txt", false);
+        if (file != null){
+            if (!file.exists()){
+                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Facade.getInstance().setAutomataPath(file.getAbsolutePath());
+                Facade.getInstance().loadAutomata();
+            }
+        }
+    }//GEN-LAST:event_bttOpenAutoMouseClicked
+
+    private void bttCompileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCompileMouseClicked
+        boolean inDebug = debugMode.isSelected();
+        Facade.getInstance().evaluateEntry(inDebug);
+    }//GEN-LAST:event_bttCompileMouseClicked
+    
+    public void setEntryText(String pEntry){
+        textEntry.setText("");
+        textEntry.insert(pEntry, 0);
+    }
     
     private File loadFilePathDialog(String pTittle, FileFilter pFilter, String pFileName, boolean pIsSaveDialog){
         JFileChooser fc = new JFileChooser();

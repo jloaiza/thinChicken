@@ -77,10 +77,15 @@ public class LoadAutomata
         {
             case "Been":
                 Automata.getInstance().newState(pState);
+                System.out.println("here:"+pState);
+                break;
             case "Alphabet":
                 Automata.getInstance().addWordToAlphabet(pState);
+                break;
             case "Final":
                 Automata.getInstance().setFinalState(pState);
+                System.out.println("here2:"+pState);
+                break;
         }
     }
     

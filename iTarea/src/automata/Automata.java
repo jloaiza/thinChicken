@@ -26,10 +26,11 @@ public class Automata {
     private BinarySearchTree<State> _states;                //All the automata states
     private BinarySearchTree<String> _alphabet;             //The automata alphabet
     private State _initialState;                            //Initial state of the automata
+    private static final char VOID_CHAR = 'E';
     
     private boolean _onDebug;
     
-    private static int SLEEP_ON_DEBUG = 2000;
+    private static int SLEEP_ON_DEBUG = 500;
     
     private static Automata _instance;
     
@@ -51,6 +52,7 @@ public class Automata {
         _alphabet = new BinarySearchTree<>();
         _initialState = null;
         _onDebug = false;
+        _alphabet.insert(String.valueOf(VOID_CHAR));
     }
     
     public void setOnDebugMode(boolean pDebug){
@@ -190,7 +192,9 @@ public class Automata {
      * @param pChain
      * @return Boolean 
      */
-    public synchronized boolean evaluate(String pChain){
+    public synchronized boolean evaluate(String pChain) throws InterruptedException{
+        clearPathStack();
+        System.out.println("To evaluate:"+pChain);
         
         //We add the start node to the evaluation stack:
         StateContainer container = new StateContainer(0, _initialState, null);
@@ -204,33 +208,31 @@ public class Automata {
             checkParentInPath(container.getParent());
             
             index = container.getIndex(); //This element have the corresponding index in the chain
+            
             if (index == pChain.length()){ //If the index+1 is equals to the length means all chain have been evaluated
-                if (container.getState().isFinal()){ //If the state is final the chain is correct :D
+                
+                if (container.getState().isFinal()){
                     _evaluationStack.clear();
-                    
+                    _pathStateQueue.push(container.getState());
+
                     //AQUI VA INSTRUCCIÓN GUI PINTAR VERDE
-                    Facade.getInstance().guiCheckStateColor(container.getState().getID());
-                    
-                    return true;
-                    
-                } else {
-                    
-                    //AQUI VA INSTRUCCIÓN GUI PINTAR ROJO, ESPERAR, DESPINTAR
-                    Facade.getInstance().guiBadStateColor(container.getState().getID());
-                    try {
+                    if (_onDebug){
+                        Facade.getInstance().guiGoodStateColor(container.getState().getID());
                         Thread.sleep(SLEEP_ON_DEBUG);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Automata.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    Facade.getInstance().guiDefaultStateColor(container.getState().getID());
-                    
-                }
+
+                    return true;
+                }          
                 
             } else { //If we haven't check al chain add relations of the actual state to the stack to be evaluated
                 int finalIndex = findNextKey(pChain, index);
                 
                 //AQUI VA INSTRUCCIÓN GUI PINTAR AZUL ESTADO
-                Facade.getInstance().guiCheckStateColor(container.getState().getID());
+                if (_onDebug){
+                    Facade.getInstance().guiCheckStateColor(container.getState().getID());
+                    Thread.sleep(SLEEP_ON_DEBUG);
+                }
+                
                 
                 _pathStateQueue.push(container.getState()); //Add actual state to the path
                 
@@ -242,34 +244,38 @@ public class Automata {
                         addRelationsToStack(connection.getRelations(), finalIndex, container.getState());
                     }
                     
-                } else {
-                    
-                    return false;
-                    
                 }
-                    
+            }
+            ConnectionHandler connection = container.getState().getConnection(String.valueOf(VOID_CHAR));
+            if (connection != null){
+                addRelationsToStack(connection.getRelations(), index, container.getState());
             }
         }
         return false;
     }
     
-    private void checkParentInPath(State pParent){
+    private void checkParentInPath(State pParent) throws InterruptedException{
         if (pParent != null){
             while (_pathStateQueue.top().compareTo(pParent) != 0){
                 
                 //AQUI VA INSTRUCCIÓN GUI PARA DESPINTAR EL NODO
-                Facade.getInstance().guiDefaultStateColor(_pathStateQueue.top().getID());
+                if (_onDebug){
+                    Facade.getInstance().guiDefaultStateColor(_pathStateQueue.top().getID());
+                    Thread.sleep(SLEEP_ON_DEBUG);
+                }
+                
                 
                 _pathStateQueue.pop();
             }
         }
     }
     
-    private void clearPathStack(){
+    private void clearPathStack() throws InterruptedException{
         State iState = _pathStateQueue.pop();
         while (iState != null){
             //AQUI VA INSTRUCCIÓN GUI PARA DESPINTAR EL CAMINO
             Facade.getInstance().guiDefaultStateColor(iState.getID());
+            Thread.sleep(100);
             iState = _pathStateQueue.pop();
         }
     }
@@ -294,18 +300,27 @@ public class Automata {
     public void showMe(){
         Facade facade = Facade.getInstance();
         facade.guiSetStateCount(_states.getCount());
-        showAutomata(_states.getRoot());
-        
+        showStates(_states.getRoot());
+        showConnections(_states.getRoot());
+        facade.guiSetStartState(_initialState.getID());
     }
     
-    private void showAutomata(structures.trees.Node<State> pState){
+    private void showConnections(structures.trees.Node<State> pState){
+        if (pState == null){
+            return;
+        }
+        pState.getValue().showConnections();
+        showConnections(pState.getLeftChild());
+        showConnections(pState.getRightChild());
+    }
+    
+    private void showStates(structures.trees.Node<State> pState){
         if (pState == null){
             return;
         }
         Facade.getInstance().guiAddState(pState.getValue().getID(), pState.getValue().isFinal());
-        pState.getValue().showConnections();
-        showAutomata(pState.getLeftChild());
-        showAutomata(pState.getRightChild());
+        showStates(pState.getLeftChild());
+        showStates(pState.getRightChild());
     }
     
     
