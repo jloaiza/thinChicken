@@ -6,6 +6,7 @@
 
 package automata;
 
+import itarea.Facade;
 import structures.trees.BinarySearchTree;
 
 /**
@@ -206,6 +207,23 @@ public class State implements Comparable<State>{
     @Override
     public int compareTo(State pState) {
         return _id.compareTo(pState.getID());
+    }
+    
+    public void showConnections(){
+        showConnectionsAux(_connectionsTree.getRoot());
+    }
+    
+    private void showConnectionsAux(structures.trees.Node<ConnectionHandler> pNode){
+        if (pNode == null){
+            return;
+        }
+        structures.lineal.Node<State> iNode = pNode.getValue().getRelations().getHead();
+        while (iNode != null){
+            Facade.getInstance().guiAddConnection(_id, iNode.getValue().getID(), pNode.getValue().getKey());
+            iNode = iNode.getNext();
+        }
+        showConnectionsAux(pNode.getLeftChild());
+        showConnectionsAux(pNode.getRightChild());
     }
     
 }

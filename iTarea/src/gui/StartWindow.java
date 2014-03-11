@@ -6,11 +6,18 @@
 
 package gui;
 
+import itarea.LoadFile;
+import itarea.PathRegister;
+import itarea.SaveFile;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -50,29 +57,6 @@ public final class StartWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         panAutomata.setSize(500, 500);
-        
-        System.out.println(panAutomata.getSize());
-        
-        _guiAutoHandler.setItemsCountToLoad(10);
-        _guiAutoHandler.newState("1", false);
-        _guiAutoHandler.newState("2", false);
-        _guiAutoHandler.newState("3", true);
-        _guiAutoHandler.newState("4", false);
-        _guiAutoHandler.newState("5", false);
-        _guiAutoHandler.newState("6", true);
-        _guiAutoHandler.newState("7", true);
-        _guiAutoHandler.newState("8", false);
-        
-        _guiAutoHandler.setStartState("1");
-        
-        _guiAutoHandler.addConnection("1", "7", "atrapasuca", false);
-        _guiAutoHandler.addConnection("7", "1", "acusaparta", true);
-        
-        _guiAutoHandler.addConnection("1", "5", "atrapasuca", false);
-        _guiAutoHandler.addConnection("6", "7", "atrapasuca", false);
-        _guiAutoHandler.addConnection("5", "8", "atrapasuca", false);
-        _guiAutoHandler.addConnection("8", "5", "atrapasuca", true);
-        
     }          
     
     protected void onEditMode(boolean pOnEdit){
@@ -106,6 +90,11 @@ public final class StartWindow extends javax.swing.JFrame {
         textExit.setText(pExit);
     }
     
+    public void setProdText(String pProd){
+        textProd.setText(pProd);
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,6 +105,7 @@ public final class StartWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        bttSaveProd = new javax.swing.JLabel();
         bttSaveExit = new javax.swing.JLabel();
         bttOpenEntry = new javax.swing.JLabel();
         bttSaveEntry = new javax.swing.JLabel();
@@ -133,10 +123,11 @@ public final class StartWindow extends javax.swing.JFrame {
         bttUpS2 = new javax.swing.JLabel();
         bttRightS1 = new javax.swing.JLabel();
         bttLeftS1 = new javax.swing.JLabel();
-        lblInfo = new javax.swing.JLabel();
         slider2 = new javax.swing.JLabel();
         slider1 = new javax.swing.JLabel();
         debugMode = new javax.swing.JCheckBox();
+        scrollProd = new javax.swing.JScrollPane();
+        textProd = new javax.swing.JTextArea();
         scrollExit = new javax.swing.JScrollPane();
         textExit = new javax.swing.JTextArea();
         scrollEntry = new javax.swing.JScrollPane();
@@ -148,9 +139,27 @@ public final class StartWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MiniCompilador");
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(950, 544));
+
+        bttSaveProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttSave.png"))); // NOI18N
+        bttSaveProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttSaveProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttSaveProdMouseClicked(evt);
+            }
+        });
+        jLayeredPane1.add(bttSaveProd);
+        bttSaveProd.setBounds(920, 385, 27, 24);
 
         bttSaveExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttSave.png"))); // NOI18N
         bttSaveExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -160,10 +169,15 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttSaveExit);
-        bttSaveExit.setBounds(920, 385, 27, 24);
+        bttSaveExit.setBounds(448, 385, 27, 24);
 
         bttOpenEntry.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttOpen.png"))); // NOI18N
         bttOpenEntry.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttOpenEntry.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttOpenEntryMouseClicked(evt);
+            }
+        });
         jLayeredPane1.add(bttOpenEntry);
         bttOpenEntry.setBounds(869, 41, 27, 24);
 
@@ -307,11 +321,6 @@ public final class StartWindow extends javax.swing.JFrame {
         jLayeredPane1.add(bttLeftS1);
         bttLeftS1.setBounds(5, 355, 18, 18);
 
-        lblInfo.setForeground(new java.awt.Color(255, 255, 255));
-        lblInfo.setText("lblInfo");
-        jLayeredPane1.add(lblInfo);
-        lblInfo.setBounds(10, 520, 640, 21);
-
         slider2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider2.png"))); // NOI18N
         jLayeredPane1.add(slider2);
         slider2.setBounds(620, 69, 20, 304);
@@ -325,6 +334,20 @@ public final class StartWindow extends javax.swing.JFrame {
         jLayeredPane1.add(debugMode);
         debugMode.setBounds(250, 41, 89, 22);
 
+        scrollProd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+
+        textProd.setEditable(false);
+        textProd.setBackground(java.awt.Color.white);
+        textProd.setColumns(20);
+        textProd.setRows(5);
+        textProd.setDisabledTextColor(java.awt.Color.white);
+        scrollProd.setViewportView(textProd);
+
+        jLayeredPane1.add(scrollProd);
+        scrollProd.setBounds(475, 409, 475, 111);
+
+        scrollExit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+
         textExit.setEditable(false);
         textExit.setBackground(java.awt.Color.white);
         textExit.setColumns(20);
@@ -333,7 +356,7 @@ public final class StartWindow extends javax.swing.JFrame {
         scrollExit.setViewportView(textExit);
 
         jLayeredPane1.add(scrollExit);
-        scrollExit.setBounds(0, 409, 950, 111);
+        scrollExit.setBounds(0, 409, 475, 111);
 
         textEntry.setBackground(java.awt.Color.white);
         textEntry.setColumns(20);
@@ -372,7 +395,34 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bkgMouseClicked
 
     private void bttSaveEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveEntryMouseClicked
-        System.out.println(textEntry.getText());
+        File file;
+        if (evt.isShiftDown() || PathRegister.ENTRY_PATH.compareTo("") == 0){
+            file = loadFilePathDialog("Guardar entrada", Utils.getTxtFilter(), "entrada.txt", true);
+        } else {
+            file = new File(PathRegister.ENTRY_PATH);
+        }
+        if (file != null){
+            if (file.exists()){
+                Object[] options = { "Aceptar", "Cancelar" };
+                int selection = JOptionPane.showOptionDialog(null, 
+                        "El archivo ya existe, ¿desea sobrescribirlo?", 
+                        "Atención", 
+                        JOptionPane.DEFAULT_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE, 
+                        null, options, options[0]);
+                if (selection == 0){
+                    SaveFile save = new SaveFile();
+                    save.writeFile(file.getAbsolutePath(), textEntry.getText());
+                    PathRegister.ENTRY_PATH = file.getAbsolutePath();
+                }
+            } else {
+                SaveFile save = new SaveFile();
+                save.writeFile(file.getAbsolutePath(), textEntry.getText());
+                PathRegister.ENTRY_PATH = file.getAbsolutePath();
+            }
+            
+        }
+        
     }//GEN-LAST:event_bttSaveEntryMouseClicked
 
     private void bttEditAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttEditAutoMouseClicked
@@ -453,6 +503,57 @@ public final class StartWindow extends javax.swing.JFrame {
     private void bttSaveExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveExitMouseClicked
         System.out.println(textExit.getText());
     }//GEN-LAST:event_bttSaveExitMouseClicked
+
+    private void bttOpenEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenEntryMouseClicked
+        
+        File file = loadFilePathDialog("Abrir entrada", Utils.getTxtFilter(), "entrada.txt", false);
+        if (file != null){
+            if (!file.exists() || file.getName().toLowerCase().compareTo("entrada.txt") != 0){
+                JOptionPane.showMessageDialog(null, "Archivo de entrada invalido o no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                PathRegister.ENTRY_PATH = file.getAbsolutePath();
+                LoadFile lf = new LoadFile();
+                String readed = lf.readFile(file.getAbsolutePath());
+                textEntry.setText("");
+                textEntry.insert(readed, 0);
+            }
+        }
+        
+    }//GEN-LAST:event_bttOpenEntryMouseClicked
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        
+    }//GEN-LAST:event_formKeyReleased
+
+    private void bttSaveProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveProdMouseClicked
+        
+    }//GEN-LAST:event_bttSaveProdMouseClicked
+    
+    private File loadFilePathDialog(String pTittle, FileFilter pFilter, String pFileName, boolean pIsSaveDialog){
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(pFilter);
+        fc.setAcceptAllFileFilterUsed(false);
+        fc.setDialogTitle(pTittle);
+        fc.setSelectedFile(new File(pFileName));
+        
+        int returnVal;
+        if (pIsSaveDialog){
+            returnVal = fc.showSaveDialog(this);
+        } else {
+            returnVal = fc.showOpenDialog(this);
+        }
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return fc.getSelectedFile();
+        } else {
+            return null;
+        } 
+    }
+    
     
     private void moveSliderAutomata(int pDirection){
         while (_onScroll){
@@ -543,6 +644,7 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JLabel bttSaveAuto;
     private javax.swing.JLabel bttSaveEntry;
     private javax.swing.JLabel bttSaveExit;
+    private javax.swing.JLabel bttSaveProd;
     private javax.swing.JLabel bttSlider1;
     private javax.swing.JLabel bttSlider2;
     private javax.swing.JLabel bttUpS2;
@@ -552,13 +654,14 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lblAutomata;
     private javax.swing.JLabel lblEntry;
     private javax.swing.JLabel lblExit;
-    private javax.swing.JLabel lblInfo;
     private javax.swing.JLayeredPane panAutomata;
     private javax.swing.JScrollPane scrollEntry;
     private javax.swing.JScrollPane scrollExit;
+    private javax.swing.JScrollPane scrollProd;
     private javax.swing.JLabel slider1;
     private javax.swing.JLabel slider2;
     private javax.swing.JTextArea textEntry;
     private javax.swing.JTextArea textExit;
+    private javax.swing.JTextArea textProd;
     // End of variables declaration//GEN-END:variables
 }

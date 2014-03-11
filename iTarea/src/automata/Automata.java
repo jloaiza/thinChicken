@@ -6,6 +6,9 @@
 
 package automata;
 
+import itarea.Facade;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import structures.lineal.SimpleLinkedList;
 import structures.lineal.StackNodes;
 import structures.trees.BinarySearchTree;
@@ -19,11 +22,14 @@ import structures.trees.BinarySearchTree;
 
 public class Automata {
     private StackNodes<StateContainer> _evaluationStack;    //Stack where all the posibles paths in an evaluation are going to be save
-    private StackNodes<State> _pathStateQueue;                   //Stack of evaluated states
+    private StackNodes<State> _pathStateQueue;              //Stack of evaluated states
     private BinarySearchTree<State> _states;                //All the automata states
     private BinarySearchTree<String> _alphabet;             //The automata alphabet
     private State _initialState;                            //Initial state of the automata
     
+    private boolean _onDebug;
+    
+    private static int SLEEP_ON_DEBUG = 2000;
     
     private static Automata _instance;
     
@@ -44,6 +50,11 @@ public class Automata {
         _states = new BinarySearchTree<>();
         _alphabet = new BinarySearchTree<>();
         _initialState = null;
+        _onDebug = false;
+    }
+    
+    public void setOnDebugMode(boolean pDebug){
+        _onDebug = pDebug;
     }
     
     public synchronized void eraseState(String pID){
@@ -56,15 +67,6 @@ public class Automata {
             } else {
                 System.out.println("Error al borrar, estado no encontrado: "+pID);
             }
-        } else {
-            //AQUI VA MENSAJE DE ERROR GUI, CAMBIE EL ESTADO INICIAL ANTES DE BORRAR
-        }
-    }
-    
-    public synchronized void eraseState(State pState){
-        if (_initialState.compareTo(pState) != 0){
-            pState.eraseMe();
-            _states.erase(pState);
         } else {
             //AQUI VA MENSAJE DE ERROR GUI, CAMBIE EL ESTADO INICIAL ANTES DE BORRAR
         }
@@ -207,12 +209,20 @@ public class Automata {
                     _evaluationStack.clear();
                     
                     //AQUI VA INSTRUCCIÓN GUI PINTAR VERDE
+                    Facade.getInstance().guiCheckStateColor(container.getState().getID());
                     
                     return true;
                     
                 } else {
                     
                     //AQUI VA INSTRUCCIÓN GUI PINTAR ROJO, ESPERAR, DESPINTAR
+                    Facade.getInstance().guiBadStateColor(container.getState().getID());
+                    try {
+                        Thread.sleep(SLEEP_ON_DEBUG);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Automata.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Facade.getInstance().guiDefaultStateColor(container.getState().getID());
                     
                 }
                 
@@ -220,6 +230,7 @@ public class Automata {
                 int finalIndex = findNextKey(pChain, index);
                 
                 //AQUI VA INSTRUCCIÓN GUI PINTAR AZUL ESTADO
+                Facade.getInstance().guiCheckStateColor(container.getState().getID());
                 
                 _pathStateQueue.push(container.getState()); //Add actual state to the path
                 
@@ -245,9 +256,12 @@ public class Automata {
     private void checkParentInPath(State pParent){
         if (pParent != null){
             while (_pathStateQueue.top().compareTo(pParent) != 0){
-            //AQUI VA INSTRUCCIÓN GUI PARA DESPINTAR EL NODO
-            _pathStateQueue.pop();
-        }
+                
+                //AQUI VA INSTRUCCIÓN GUI PARA DESPINTAR EL NODO
+                Facade.getInstance().guiDefaultStateColor(_pathStateQueue.top().getID());
+                
+                _pathStateQueue.pop();
+            }
         }
     }
     
@@ -255,6 +269,7 @@ public class Automata {
         State iState = _pathStateQueue.pop();
         while (iState != null){
             //AQUI VA INSTRUCCIÓN GUI PARA DESPINTAR EL CAMINO
+            Facade.getInstance().guiDefaultStateColor(iState.getID());
             iState = _pathStateQueue.pop();
         }
     }
@@ -275,6 +290,24 @@ public class Automata {
             iNode = iNode.getNext();
         }
     }
+    
+    public void showMe(){
+        Facade facade = Facade.getInstance();
+        facade.guiSetStateCount(_states.getCount());
+        showAutomata(_states.getRoot());
+        
+    }
+    
+    private void showAutomata(structures.trees.Node<State> pState){
+        if (pState == null){
+            return;
+        }
+        Facade.getInstance().guiAddState(pState.getValue().getID(), pState.getValue().isFinal());
+        pState.getValue().showConnections();
+        showAutomata(pState.getLeftChild());
+        showAutomata(pState.getRightChild());
+    }
+    
     
 //    
 //    public static void main(String[] args) {

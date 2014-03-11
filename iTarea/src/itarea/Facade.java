@@ -65,22 +65,6 @@ public class Facade {
         });
     }
     
-    public void guiSetStateCountToLoad(int pCount){
-        _startWindow.getAutoHandler().setItemsCountToLoad(pCount);
-    }
-    
-    public void guiSetStartState(String pStateID){
-        _startWindow.getAutoHandler().setStartState(pStateID);
-    }
-    
-    public void guiNewState(String pID, boolean pIsFinal){
-        _startWindow.getAutoHandler().newState(pID, pIsFinal);
-    }
-    
-    public void guiAddConnection(String pStartState, String pEndState, String pKey, boolean pIsSecondConnection){
-        _startWindow.getAutoHandler().addConnection(pStartState, pEndState, pKey, pIsSecondConnection);
-    }
-    
     public void guiCheckStateColor(String pID){
         _startWindow.getAutoHandler().setStateColor(pID, GUIAutoHandler.CHECK_STATE_COLOR);
     }
@@ -103,5 +87,29 @@ public class Facade {
     
     public void guiSetExitText(String pExit){
         _startWindow.setExitText(pExit);
+    }
+
+    public void guiSetProductionsText(String pText){
+        _startWindow.setProdText(pText);
+    }
+
+    public void guiAddState(String pID, boolean pIsFinal){
+        _startWindow.getAutoHandler().newState(pID, pIsFinal);
+    }
+    
+    public void guiSetStartState(String pID){
+        _startWindow.getAutoHandler().setStartState(pID);
+    }
+    
+    public void guiSetStateCount(int pCount){
+        _startWindow.getAutoHandler().setItemsCountToLoad(pCount);
+    }
+    
+    public void guiAddConnection(String pStartState, String pFinalState, String pKey){
+        _startWindow.getAutoHandler().addConnection(pStartState, pFinalState, pKey);
+    }
+    
+    public void guiShowAutomata(){
+        _automata.showMe();
     }
 }
