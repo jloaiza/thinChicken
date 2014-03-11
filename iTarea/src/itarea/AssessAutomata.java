@@ -27,7 +27,13 @@ public class AssessAutomata
         loadFile();
         startAssess(_readFile);
         writeExitFile();
+        resetAll();
+    }
+    
+    private void resetAll()
+    {
         _queue.clear();
+        _entryFile.resetRead();
     }
     
     private void loadFile()

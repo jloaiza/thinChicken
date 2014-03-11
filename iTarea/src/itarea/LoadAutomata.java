@@ -27,8 +27,13 @@ public class LoadAutomata
         setInitialBeen(_readFile);
         setTransition(_readFile);
         createBeenAndAlphabetAndFinal(_readFile,_counter = _counter + 3,"Final");
-        //Facade.getInstance().guiShowAutomata();
+        resetAll();
+    }
+    
+    private void resetAll()
+    {
         _counter = 3;
+        _automataFile.resetRead();
     }
     
     private void loadFile()

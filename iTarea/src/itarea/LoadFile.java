@@ -61,4 +61,9 @@ public class LoadFile
         }
         return aux;
     }
+    
+    public void resetRead()
+    {
+        _read = "";
+    }
 }

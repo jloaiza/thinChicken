@@ -30,6 +30,7 @@ public class SaveFile
             _writer.write(pText);
             _writer.close();
             _writerBuffer.close();
+            _fileWriter.close();
         }
         catch (IOException e)
         {

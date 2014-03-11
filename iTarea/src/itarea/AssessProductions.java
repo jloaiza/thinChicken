@@ -6,6 +6,9 @@
 
 package itarea;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Yeison
@@ -29,15 +32,32 @@ public class AssessProductions
     private LoadFile _productionsFile = new LoadFile();
     private LoadFile _automataFile = new LoadFile();
     
-    public void start()
+    public synchronized void start()
     {
         createInputString();
+        resetBuffers();
         createAlphabet();
         startAssess();
         sendFile();
-        _finalGenerate = "";
-        _temporaryProductions = null;
+        resetVariables();
+    }
+    
+    private void resetVariables()
+    {
+        _entrySplitString = null;
+        _exitSplitString = null;
+        _entrySplitString = null;
+        _readFile = null;
         _inputSplitString = null;
+        _finalGenerate = "";
+    }
+    
+    private void resetBuffers()
+    {
+        _automataFile.resetRead();
+        _entryFile.resetRead();
+        _exitFile.resetRead();
+        _productionsFile.resetRead();
     }
     
     private void createInputString()
@@ -47,16 +67,22 @@ public class AssessProductions
         _entrySplitString = _entryFile.readFile(_directionEntry).split("/");
         _exitSplitString = _exitFile.readFile(_directionExit).split("/");
         _splitProductions = _productionsFile.readFile(_directionProductions).split("/");
-        for(int i = 0; i < _entrySplitString.length; i++)
+        System.out.println("INICIO DE TEST");
+        System.out.println("READ FILE: " + _readFile);
+        System.out.println("ENTRY SPLIT: " + _entrySplitString[0] + " " + _entrySplitString[1] + " " + _entrySplitString[2] + " " + _entrySplitString[3]);
+        System.out.println("EXIT SPLIT STRING: " + _exitSplitString[0] + " " + _exitSplitString[1] + " " + _exitSplitString[2] + " " + _exitSplitString[3]);
+        System.out.println("FIN DE TEST");
+        for(int i = 1; i < _entrySplitString.length; i++)
         {
             if("OK".equals(_exitSplitString[i]))
             {
+                System.out.println("INDICE: " + i);
                 input = input + _entrySplitString[i] + "/";
             }
         }
         _inputSplitString = input.split("/");
         //NO
-        System.out.println(input);
+        System.out.println("EL INPUT ES EL SIGUIENTE: " + input);
         //NO
     }
     
@@ -64,6 +90,7 @@ public class AssessProductions
     {
         for(int i = 0; i < _inputSplitString.length; i++)
         {
+            System.out.println("CAMBIAMOS DE LINEA DE ENTRADA A: " + _inputSplitString[i]);
             String auxgenerate = "";
             String auxcharacter = "";
             int after = 0;
@@ -134,7 +161,7 @@ public class AssessProductions
             }
             auxgenerate = auxgenerate + ultimateProduction(auxcharacter);
             //NO
-            System.out.println(auxcharacter);
+            System.out.println("AUXCHARACTER: " + auxcharacter);
             //NO
             _finalGenerate = _finalGenerate + auxgenerate + "\n";
         }
