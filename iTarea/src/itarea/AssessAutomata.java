@@ -44,16 +44,20 @@ public class AssessAutomata
     private void startAssess(String pRead)
     {
         boolean send = true;
-        String[] assess = pRead.split("/");
+        System.out.println("LECTURA: " + pRead);
+        String[] assess = pRead.split("\n");
         for (int i = 1; i < assess.length; i++) 
         {
+            System.out.println("ENVIADO: " + assess[i]);
             send = Automata.getInstance().evaluate(assess[i]);
             if (send == true)
             {
+                System.out.println("TRUE");
                 _queue.enqueue("OK");
             }
             else
             {
+                System.out.println("FALSE");
                 _queue.enqueue(":-c");
             }
         }
@@ -66,7 +70,7 @@ public class AssessAutomata
         {
             finalassess = finalassess + _queue.dequeue() + "\n";
         }
-        _exitFile.writeFile("salida.txt", finalassess);
+        _exitFile.writeFile("/root/Desktop/Proyecto/salida.txt", finalassess);
         //NO
         System.out.println(finalassess);
         //NO

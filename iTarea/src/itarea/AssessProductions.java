@@ -64,9 +64,9 @@ public class AssessProductions
     {
         String input = "";
         _readFile = _automataFile.readFile(_directionAutomata);
-        _entrySplitString = _entryFile.readFile(_directionEntry).split("/");
-        _exitSplitString = _exitFile.readFile(_directionExit).split("/");
-        _splitProductions = _productionsFile.readFile(_directionProductions).split("/");
+        _entrySplitString = _entryFile.readFile(_directionEntry).split("\n");
+        _exitSplitString = _exitFile.readFile(_directionExit).split("\n");
+        _splitProductions = _productionsFile.readFile(_directionProductions).split("\n");
         System.out.println("INICIO DE TEST");
         System.out.println("READ FILE: " + _readFile);
         System.out.println("ENTRY SPLIT: " + _entrySplitString[0] + " " + _entrySplitString[1] + " " + _entrySplitString[2] + " " + _entrySplitString[3]);
@@ -77,10 +77,10 @@ public class AssessProductions
             if("OK".equals(_exitSplitString[i]))
             {
                 System.out.println("INDICE: " + i);
-                input = input + _entrySplitString[i] + "/";
+                input = input + _entrySplitString[i] + "\n";
             }
         }
-        _inputSplitString = input.split("/");
+        _inputSplitString = input.split("\n");
         //NO
         System.out.println("EL INPUT ES EL SIGUIENTE: " + input);
         //NO
@@ -279,7 +279,7 @@ public class AssessProductions
             else if (",".equals(Character.toString(_readFile.charAt(i))))
             {
                 System.out.println("ALPHABETO: " + alphabet);
-                alphabet = alphabet + "/";
+                alphabet = alphabet + "\n";
                 System.out.println(alphabet);
             }
             else
@@ -287,9 +287,9 @@ public class AssessProductions
                 alphabet = alphabet + Character.toString(_readFile.charAt(i));
             }
         }
-        alphabet = alphabet + "/";
+        alphabet = alphabet + "\n";
         System.out.println("ALFABETO FINAL: " + alphabet);
-        _alphabetSplit = alphabet.split("/");
+        _alphabetSplit = alphabet.split("\n");
     }
     
     private int giveMeAWord(String pChain, int pIndex)

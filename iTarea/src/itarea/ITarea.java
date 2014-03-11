@@ -18,6 +18,14 @@ public class ITarea {
     public static void main(String[] args)
     {
         Facade.startAll();
+//        LoadAutomata hola = new LoadAutomata();;
+//        hola.setDirection("/root/Desktop/Proyecto/automata.txt");
+//        hola.load();
+//        AssessAutomata hola2 = new AssessAutomata();
+//        hola2.setDirection("/root/Desktop/Proyecto/entrada.txt");
+//        hola2.start();
+//        hola2.setDirection("/root/Desktop/Proyecto/entrada.txt");
+//        hola2.start();
 //        AssessProductions hola = new AssessProductions();
 //        hola.setDirectionAutomata("/root/Desktop/Proyecto/automata.txt");
 //        hola.setDirectionExit("/root/Desktop/Proyecto/salida.txt");

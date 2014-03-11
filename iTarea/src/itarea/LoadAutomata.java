@@ -19,7 +19,7 @@ public class LoadAutomata
     private String _direction;
     private int _counter = 3;
     
-    public void load()
+    public synchronized void load()
     {
         loadFile();
         createBeenAndAlphabetAndFinal(_readFile,_counter,"Been");
@@ -53,6 +53,7 @@ public class LoadAutomata
             }
             else if (",".equals(Character.toString(pRead.charAt(_counter))))
             {
+                System.out.println("AGREGANDO: " + estate);
                 add(pOperation,estate);
                 System.out.println(estate);
                 estate = "";
@@ -65,6 +66,7 @@ public class LoadAutomata
             }
         }
         add(pOperation,estate);
+        System.out.println("AGREGANDO: " + estate);
         _counter = _counter + 3;
         System.out.println(estate);
     }

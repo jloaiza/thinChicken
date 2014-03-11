@@ -33,7 +33,7 @@ public class LoadFile
             while(aux != null)
             //Este repite el proceso de lectura por si el archivo viene en varias lineas.
             {
-                _read = _read + removeSpace(aux) + "/";
+                _read = _read + removeSpace(aux) + "\n";
                 aux = _readBuffer.readLine();
                 //Si la variable aux aún tiene datos se guardan sino se sale del ciclo.
             }

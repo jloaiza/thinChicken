@@ -1,3 +1,3 @@
-w h i le
- wh i l e ( a   = = tr u e ) i n s t r u c c i o ne s ;  
-whi le( a z   = = tr u e)i n s t r u     c c i o n     es ;
+while
+while ( a==true ) instruciones;
+while ( az==true ) instruciones;
