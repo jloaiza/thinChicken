@@ -63,10 +63,10 @@ public class AssessProductions
     private void createInputString()
     {
         String input = "";
-        _readFile = _automataFile.readFile(_directionAutomata);
-        _entrySplitString = _entryFile.readFile(_directionEntry).split("\n");
-        _exitSplitString = _exitFile.readFile(_directionExit).split("\n");
-        _splitProductions = _productionsFile.readFile(_directionProductions).split("\n");
+        _readFile = _automataFile.readFile(_directionAutomata, "NULL");
+        _entrySplitString = _entryFile.readFile(_directionEntry,"NULL").split("\n");
+        _exitSplitString = _exitFile.readFile(_directionExit,"NULL").split("\n");
+        _splitProductions = _productionsFile.readFile(_directionProductions, "NULL").split("\n");
         System.out.println("INICIO DE TEST");
         System.out.println("READ FILE: " + _readFile);
         System.out.println("ENTRY SPLIT: " + _entrySplitString[0] + " " + _entrySplitString[1] + " " + _entrySplitString[2] + " " + _entrySplitString[3]);

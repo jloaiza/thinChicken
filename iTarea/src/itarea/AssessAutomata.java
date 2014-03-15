@@ -39,7 +39,7 @@ public class AssessAutomata
     
     private void loadFile()
     {
-        _readFile = _entryFile.readFile(_direction);
+        _readFile = _entryFile.readFile(_direction,"NULL");
     }
     
     private void startAssess(String pRead) throws InterruptedException

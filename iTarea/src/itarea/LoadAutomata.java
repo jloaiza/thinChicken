@@ -38,7 +38,7 @@ public class LoadAutomata
     
     private void loadFile()
     {
-        _readFile = _automataFile.readFile(_direction);
+        _readFile = _automataFile.readFile(_direction, "NULL");
     }
     
     private void createBeenAndAlphabetAndFinal(String pRead,int pCounter, String pOperation)

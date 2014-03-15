@@ -117,7 +117,7 @@ public class Facade {
     
     public String loadEntry(){
         LoadFile lf = new LoadFile();
-        return lf.readFile(PathRegister.ENTRY_PATH);
+        return lf.readFile(PathRegister.ENTRY_PATH, "Entry");
     }
     
     public void evaluateEntry(boolean pDebugMode){

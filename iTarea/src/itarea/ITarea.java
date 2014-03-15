@@ -17,11 +17,11 @@ public class ITarea {
      */
     public static void main(String[] args)
     {
-//        Facade.startAll();
+        Facade.startAll();
         
-        LoadAutomata hola = new LoadAutomata();;
-        hola.setDirection("/root/Desktop/chicken/automata.txt");
-        hola.load();
+//        LoadAutomata hola = new LoadAutomata();;
+//        hola.setDirection("/root/Desktop/chicken/automata.txt");
+//        hola.load();
 //        AssessAutomata hola2 = new AssessAutomata();
 //        hola2.setDirection("/home/jmloaiza/NetBeansProjects/thinChicken/entrada.txt");
 //        hola2.start();

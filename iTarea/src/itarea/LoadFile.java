@@ -15,7 +15,7 @@ public class LoadFile
     private BufferedReader _readBuffer;
     private String _read = "";
     
-    public String readFile(String pDirection)
+    public String readFile(String pDirection,String pEntry)
     {
         try
         {
@@ -45,8 +45,15 @@ public class LoadFile
         catch(IOException e)
         {
             System.out.println("Error:" + e.getMessage());
-        }  
-        return _read;
+        }
+        if("Entry".equals(pEntry))
+        {
+            return _read.substring(1, _read.length()-1);
+        }
+        else
+        {
+            return _read;
+        }
     }
     
     private String removeSpace(String pWord)
