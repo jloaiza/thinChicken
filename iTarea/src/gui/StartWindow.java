@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -57,8 +58,48 @@ public final class StartWindow extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         
+        lblViewerAuto.setVisible(false);
+        
         panAutomata.setSize(500, 500);
     }          
+    
+    private void showAutoSliders(){
+        slider1.setVisible(true);
+        slider1.setEnabled(true);
+        slider2.setVisible(true);
+        slider2.setEnabled(true);
+        bttUpS2.setVisible(true);
+        bttUpS2.setEnabled(true);
+        bttDownS2.setVisible(true);
+        bttDownS2.setEnabled(true);
+        bttLeftS1.setVisible(true);
+        bttLeftS1.setEnabled(true);
+        bttRightS1.setVisible(true);
+        bttRightS1.setEnabled(true);
+        bttSlider1.setVisible(true);
+        bttSlider1.setEnabled(true);
+        bttSlider2.setVisible(true);
+        bttSlider2.setEnabled(true);
+    }
+    
+    private void hideAutoSliders(){
+        slider1.setVisible(false);
+        slider1.setEnabled(false);
+        slider2.setVisible(false);
+        slider2.setEnabled(false);
+        bttUpS2.setVisible(false);
+        bttUpS2.setEnabled(false);
+        bttDownS2.setVisible(false);
+        bttDownS2.setEnabled(false);
+        bttLeftS1.setVisible(false);
+        bttLeftS1.setEnabled(false);
+        bttRightS1.setVisible(false);
+        bttRightS1.setEnabled(false);
+        bttSlider1.setVisible(false);
+        bttSlider1.setEnabled(false);
+        bttSlider2.setVisible(false);
+        bttSlider2.setEnabled(false);
+    }
     
     protected void onEditMode(boolean pOnEdit){
         if (pOnEdit){
@@ -69,7 +110,7 @@ public final class StartWindow extends javax.swing.JFrame {
             
             scrollEntry.setVisible(false);
             scrollExit.setVisible(false);
-            
+            scrollProd.setVisible(false);
         } else {
             _onEditMode = false;
             _palette.setVisible(false);
@@ -77,6 +118,7 @@ public final class StartWindow extends javax.swing.JFrame {
             
             scrollEntry.setVisible(true);
             scrollExit.setVisible(true);
+            scrollProd.setVisible(true);
             
             this.requestFocus();
         }
@@ -121,6 +163,7 @@ public final class StartWindow extends javax.swing.JFrame {
         bttDownS2 = new javax.swing.JLabel();
         bttUpS2 = new javax.swing.JLabel();
         bttRightS1 = new javax.swing.JLabel();
+        bttAutoViewer = new javax.swing.JLabel();
         bttLeftS1 = new javax.swing.JLabel();
         slider2 = new javax.swing.JLabel();
         slider1 = new javax.swing.JLabel();
@@ -132,6 +175,7 @@ public final class StartWindow extends javax.swing.JFrame {
         scrollEntry = new javax.swing.JScrollPane();
         textEntry = new javax.swing.JTextArea();
         containerAutomata = new javax.swing.JPanel();
+        lblViewerAuto = new javax.swing.JLabel();
         panAutomata = new javax.swing.JLayeredPane();
         bkg = new javax.swing.JLabel();
 
@@ -320,6 +364,16 @@ public final class StartWindow extends javax.swing.JFrame {
         jLayeredPane1.add(bttRightS1);
         bttRightS1.setBounds(600, 355, 18, 18);
 
+        bttAutoViewer.setText("Viewer");
+        bttAutoViewer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttAutoViewer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bttAutoViewerMouseClicked(evt);
+            }
+        });
+        jLayeredPane1.add(bttAutoViewer);
+        bttAutoViewer.setBounds(400, 41, 46, 21);
+
         bttLeftS1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1L.png"))); // NOI18N
         bttLeftS1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bttLeftS1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -376,14 +430,21 @@ public final class StartWindow extends javax.swing.JFrame {
         jLayeredPane1.add(scrollEntry);
         scrollEntry.setBounds(652, 65, 298, 314);
 
+        containerAutomata.setBackground(java.awt.Color.white);
         containerAutomata.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblViewerAuto.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
+        lblViewerAuto.setForeground(java.awt.Color.lightGray);
+        lblViewerAuto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblViewerAuto.setText("Visualizador activado");
+        containerAutomata.add(lblViewerAuto, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 130, 620, -1));
 
         panAutomata.setBackground(new java.awt.Color(255, 255, 255));
         panAutomata.setOpaque(true);
         containerAutomata.add(panAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 290));
 
         jLayeredPane1.add(containerAutomata);
-        containerAutomata.setBounds(0, 65, 620, 290);
+        containerAutomata.setBounds(0, 65, 621, 290);
 
         bkg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bkg.jpg"))); // NOI18N
         bkg.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -406,7 +467,7 @@ public final class StartWindow extends javax.swing.JFrame {
     private void bttSaveEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveEntryMouseClicked
         File file;
         if (evt.isShiftDown() || PathRegister.ENTRY_PATH.compareTo("") == 0){
-            file = loadFilePathDialog("Guardar entrada", Utils.getTxtFilter(), "entrada.txt", true);
+            file = Utils.loadFilePathDialog("Guardar entrada", Utils.getTxtFilter(), "entrada.txt", true, this);
         } else {
             file = new File(PathRegister.ENTRY_PATH);
         }
@@ -515,7 +576,7 @@ public final class StartWindow extends javax.swing.JFrame {
 
     private void bttOpenEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenEntryMouseClicked
         
-        File file = loadFilePathDialog("Abrir entrada", Utils.getTxtFilter(), "entrada.txt", false);
+        File file = Utils.loadFilePathDialog("Abrir entrada", Utils.getTxtFilter(), "entrada.txt", false, this);
         if (file != null){
             if (!file.exists()){
                 JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -540,47 +601,50 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bttSaveProdMouseClicked
 
     private void bttOpenAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenAutoMouseClicked
-        File file = loadFilePathDialog("Abrir automata", Utils.getTxtFilter(), "automata.txt", false);
+        loadAuto(this);
+    }//GEN-LAST:event_bttOpenAutoMouseClicked
+
+    private void bttCompileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCompileMouseClicked
+        boolean inDebug = debugMode.isSelected();
+        compile(inDebug);
+    }//GEN-LAST:event_bttCompileMouseClicked
+
+    private void bttAutoViewerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttAutoViewerMouseClicked
+        panAutomata.setVisible(false);
+        lblViewerAuto.setVisible(true);
+        hideAutoSliders();
+        containerAutomata.remove(panAutomata);
+        (new AutoViewer(this)).setVisible(true);
+    }//GEN-LAST:event_bttAutoViewerMouseClicked
+    
+    protected void loadAuto(Component pParent){
+        File file = Utils.loadFilePathDialog("Abrir automata", Utils.getTxtFilter(), "automata.txt", false, pParent);
         if (file != null){
             if (!file.exists()){
-                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(pParent, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 Facade.getInstance().setAutomataPath(file.getAbsolutePath());
                 Facade.getInstance().loadAutomata();
             }
         }
-    }//GEN-LAST:event_bttOpenAutoMouseClicked
-
-    private void bttCompileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCompileMouseClicked
-        boolean inDebug = debugMode.isSelected();
-        Facade.getInstance().evaluateEntry(inDebug);
-    }//GEN-LAST:event_bttCompileMouseClicked
+    }
+    
+    protected void compile(boolean pDebugMode){
+        Facade.getInstance().evaluateEntry(pDebugMode);
+    }
+    
+    protected void showAutoAgain(){
+        containerAutomata.add(panAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 290));
+        lblViewerAuto.setVisible(false);
+        panAutomata.setVisible(true);
+        showAutoSliders();
+    }
     
     public void setEntryText(String pEntry){
         textEntry.setText("");
         textEntry.insert(pEntry, 0);
     }
     
-    private File loadFilePathDialog(String pTittle, FileFilter pFilter, String pFileName, boolean pIsSaveDialog){
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(pFilter);
-        fc.setAcceptAllFileFilterUsed(false);
-        fc.setDialogTitle(pTittle);
-        fc.setSelectedFile(new File(pFileName));
-        
-        int returnVal;
-        if (pIsSaveDialog){
-            returnVal = fc.showSaveDialog(this);
-        } else {
-            returnVal = fc.showOpenDialog(this);
-        }
-        
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            return fc.getSelectedFile();
-        } else {
-            return null;
-        } 
-    }
     
     
     private void moveSliderAutomata(int pDirection){
@@ -623,6 +687,10 @@ public final class StartWindow extends javax.swing.JFrame {
         return _guiAutoHandler;
     }
 
+    protected JLayeredPane getAutoPane(){
+        return panAutomata;
+    }
+    
 //    
 //    /**
 //     * @param args the command line arguments
@@ -661,6 +729,7 @@ public final class StartWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bkg;
+    private javax.swing.JLabel bttAutoViewer;
     private javax.swing.JLabel bttCleanAuto;
     private javax.swing.JLabel bttCompile;
     private javax.swing.JLabel bttDownS2;
@@ -682,6 +751,7 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JLabel lblAutomata;
     private javax.swing.JLabel lblEntry;
     private javax.swing.JLabel lblExit;
+    private javax.swing.JLabel lblViewerAuto;
     private javax.swing.JLayeredPane panAutomata;
     private javax.swing.JScrollPane scrollEntry;
     private javax.swing.JScrollPane scrollExit;

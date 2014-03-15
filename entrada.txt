@@ -1,3 +1,4 @@
 while
 while(a==true)instrucciones;
+while(atrapasuka);
 while(az==true)instrucciones;

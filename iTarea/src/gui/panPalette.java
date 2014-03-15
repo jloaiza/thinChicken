@@ -12,13 +12,16 @@ package gui;
  */
 public class panPalette extends javax.swing.JPanel {
 
-    StartWindow _parent;
+    private StartWindow _parent;
+    private int _clickX;
+    private int _clickY;
     /**
      * Creates new form panPalette
      */
     public panPalette(StartWindow pWindow) {
         initComponents();
         _parent = pWindow;
+        _clickX = _clickY = 0;
     }
 
     /**
@@ -31,6 +34,7 @@ public class panPalette extends javax.swing.JPanel {
     private void initComponents() {
 
         bttClose = new javax.swing.JLabel();
+        moveMe = new javax.swing.JLabel();
         bttFinalState = new javax.swing.JLabel();
         bttInitState = new javax.swing.JLabel();
         bttState = new javax.swing.JLabel();
@@ -49,6 +53,19 @@ public class panPalette extends javax.swing.JPanel {
         });
         add(bttClose);
         bttClose.setBounds(258, 9, 16, 15);
+
+        moveMe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                moveMeMousePressed(evt);
+            }
+        });
+        moveMe.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                moveMeMouseDragged(evt);
+            }
+        });
+        add(moveMe);
+        moveMe.setBounds(10, 5, 265, 40);
 
         bttFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttFinalState.png"))); // NOI18N
         bttFinalState.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
@@ -94,6 +111,25 @@ public class panPalette extends javax.swing.JPanel {
         System.out.println("relase: " + evt.getLocationOnScreen().toString());
     }//GEN-LAST:event_bttStateMouseReleased
 
+    private void moveMeMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveMeMouseDragged
+        int newX = getX()+evt.getX()-_clickX;
+        int newY = getY()+evt.getY()-_clickY;
+        
+        if (newX < -getWidth()+20 || (newX+20) > _parent.getWidth()){
+            newX = getX();
+        }
+        
+        if (newY < 0 || (newY+60) > _parent.getHeight()){
+            newY = getY();
+        }
+        setBounds(newX, newY, getWidth(), getHeight());
+    }//GEN-LAST:event_moveMeMouseDragged
+
+    private void moveMeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveMeMousePressed
+        _clickX = evt.getX();
+        _clickY = evt.getY();
+    }//GEN-LAST:event_moveMeMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bkg;
@@ -101,5 +137,6 @@ public class panPalette extends javax.swing.JPanel {
     private javax.swing.JLabel bttFinalState;
     private javax.swing.JLabel bttInitState;
     private javax.swing.JLabel bttState;
+    private javax.swing.JLabel moveMe;
     // End of variables declaration//GEN-END:variables
 }
