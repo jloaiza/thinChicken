@@ -109,10 +109,23 @@ public class LoadAutomata
     {
         _counter--;
         String initialstate = "";
-        while(!",".equals(Character.toString(pRead.charAt(_counter))))
+        if(",".equals(Character.toString(pRead.charAt(_counter))))
         {
-            initialstate = initialstate + Character.toString(pRead.charAt(_counter));
-            _counter++;
+            while(",".equals(Character.toString(pRead.charAt(_counter))))
+            {
+                initialstate = initialstate + Character.toString(pRead.charAt(_counter));
+                _counter++;
+            }
+            initialstate = initialstate.substring(0, initialstate.length()-1);
+            _counter--;
+        }
+        else
+        {
+            while(!",".equals(Character.toString(pRead.charAt(_counter))))
+            {
+                initialstate = initialstate + Character.toString(pRead.charAt(_counter));
+                _counter++;
+            }
         }
         Automata.getInstance().setInitialState(initialstate); 
         //NO
@@ -133,6 +146,7 @@ public class LoadAutomata
             if ("(".equals(Character.toString(pRead.charAt(_counter))))
             {
                   _counter++;
+                  boolean flag = false;
                   for(int i = _counter; i < pRead.length(); i++)
                   {
                       if(")".equals(Character.toString(pRead.charAt(_counter))) && !")".equals(Character.toString(pRead.charAt(_counter+1))))
@@ -141,10 +155,31 @@ public class LoadAutomata
                       }
                       else if (",".equals(Character.toString(pRead.charAt(_counter))))
                       {
-                          System.out.println("AUXILIAR: " + aux);
-                          beenone = aux;
-                          aux = "";
-                          _counter++;
+                          if(!",".equals(Character.toString(pRead.charAt(_counter-1))))
+                          {
+                              System.out.println("AUXILIAR: " + aux);
+                              beenone = aux;
+                              aux = "";
+                              _counter++;
+                              if("".equals(beenone))
+                              {
+                                  flag = true;
+                              }
+                          }
+                          else
+                          {
+                              while(",".equals(Character.toString(pRead.charAt(_counter))))
+                              {
+                                  aux = aux + Character.toString(pRead.charAt(_counter));
+                                  _counter++;
+                              }
+                              if(flag == true)
+                              {
+                                  System.out.println("ESTADO: " + aux.substring(0, aux.length()));
+                                  beenone = aux.substring(0, aux.length());
+                                  aux = "";
+                              }
+                          }
                       }
                       else
                       {
@@ -155,11 +190,13 @@ public class LoadAutomata
                   value = aux;
                   aux = "";
                 _counter = _counter + 2;
-                while(!",".equals(Character.toString(pRead.charAt(_counter))) && !"}".equals(Character.toString(pRead.charAt(_counter))))
+                while(!"(".equals(Character.toString(pRead.charAt(_counter))) && !"}".equals(Character.toString(pRead.charAt(_counter))))
                 {
                     beentwo = beentwo + Character.toString(pRead.charAt(_counter));
                     _counter++;
                 }
+                beentwo = beentwo.substring(0, beentwo.length()-1);
+                _counter--;
                 //NO
                 System.out.println(beenone);
                 System.out.println(beentwo);
