@@ -465,34 +465,10 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bkgMouseClicked
 
     private void bttSaveEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveEntryMouseClicked
-        File file;
-        if (evt.isShiftDown() || PathRegister.ENTRY_PATH.compareTo("") == 0){
-            file = Utils.loadFilePathDialog("Guardar entrada", Utils.getTxtFilter(), "entrada.txt", true, this);
-        } else {
-            file = new File(PathRegister.ENTRY_PATH);
+        String path = saveFile(evt.isShiftDown(), "Guardar entrada", PathRegister.ENTRY_PATH, "entrada.txt", textEntry.getText());
+        if (path != null){
+            PathRegister.ENTRY_PATH = path;
         }
-        if (file != null){
-            if (file.exists()){
-                Object[] options = { "Aceptar", "Cancelar" };
-                int selection = JOptionPane.showOptionDialog(null, 
-                        "El archivo ya existe, ¿desea sobrescribirlo?", 
-                        "Atención", 
-                        JOptionPane.DEFAULT_OPTION, 
-                        JOptionPane.QUESTION_MESSAGE, 
-                        null, options, options[0]);
-                if (selection == 0){
-                    SaveFile save = new SaveFile();
-                    save.writeFile(file.getAbsolutePath(), textEntry.getText());
-                    PathRegister.ENTRY_PATH = file.getAbsolutePath();
-                }
-            } else {
-                SaveFile save = new SaveFile();
-                save.writeFile(file.getAbsolutePath(), textEntry.getText());
-                PathRegister.ENTRY_PATH = file.getAbsolutePath();
-            }
-            
-        }
-        
     }//GEN-LAST:event_bttSaveEntryMouseClicked
 
     private void bttEditAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttEditAutoMouseClicked
@@ -571,7 +547,22 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bttSlider1MousePressed
 
     private void bttSaveExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveExitMouseClicked
-        System.out.println(textExit.getText());
+        if (textExit.getText().replaceAll(" *", "").isEmpty()){
+            Object[] options = { "Continuar", "Cancelar" };
+            int selection = JOptionPane.showOptionDialog(null, 
+                    "El archivo está vacío, ¿desea continuar?", 
+                    "Atención", 
+                    JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, 
+                    null, options, options[0]);
+            if (selection != 0){
+                return;
+            }
+        }
+        String path = saveFile(evt.isShiftDown(), "Guardar salida", PathRegister.EXIT_PATH, "salida.txt", textExit.getText());
+        if (path != null){
+            PathRegister.EXIT_PATH = path;
+        }
     }//GEN-LAST:event_bttSaveExitMouseClicked
 
     private void bttOpenEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenEntryMouseClicked
@@ -597,7 +588,22 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formKeyReleased
 
     private void bttSaveProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSaveProdMouseClicked
-        
+        if (textProd.getText().replaceAll(" *", "").isEmpty()){
+            Object[] options = { "Continuar", "Cancelar" };
+            int selection = JOptionPane.showOptionDialog(null, 
+                    "El archivo está vacío, ¿desea continuar?", 
+                    "Atención", 
+                    JOptionPane.DEFAULT_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, 
+                    null, options, options[0]);
+            if (selection != 0){
+                return;
+            }
+        }
+        String path = saveFile(evt.isShiftDown(), "Guardar producciones", PathRegister.PRODUCTIONS_PATH, "producciones.txt", textProd.getText());
+        if (path != null){
+            PathRegister.PRODUCTIONS_PATH = path;
+        }
     }//GEN-LAST:event_bttSaveProdMouseClicked
 
     private void bttOpenAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttOpenAutoMouseClicked
@@ -606,9 +612,10 @@ public final class StartWindow extends javax.swing.JFrame {
 
     private void bttCompileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCompileMouseClicked
         boolean inDebug = debugMode.isSelected();
+        clearExitAndProdText();
         compile(inDebug);
     }//GEN-LAST:event_bttCompileMouseClicked
-
+    
     private void bttAutoViewerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttAutoViewerMouseClicked
         panAutomata.setVisible(false);
         lblViewerAuto.setVisible(true);
@@ -616,6 +623,40 @@ public final class StartWindow extends javax.swing.JFrame {
         containerAutomata.remove(panAutomata);
         (new AutoViewer(this)).setVisible(true);
     }//GEN-LAST:event_bttAutoViewerMouseClicked
+    
+    private void clearExitAndProdText(){
+        textExit.setText("");
+        textProd.setText("");
+    }
+    
+    private String saveFile(boolean pShiftDown, String pTitle, String pPath, String pFileName, String pContent){
+        File file;
+        if (pShiftDown || pPath.compareTo("") == 0){
+            file = Utils.loadFilePathDialog(pTitle, Utils.getTxtFilter(), pFileName, true, this);
+        } else {
+            file = new File(pPath);
+        }
+        if (file != null){
+            if (file.exists() && pShiftDown){
+                Object[] options = { "Aceptar", "Cancelar" };
+                int selection = JOptionPane.showOptionDialog(null, 
+                        "El archivo ya existe, ¿desea sobrescribirlo?", 
+                        "Atención", 
+                        JOptionPane.DEFAULT_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE, 
+                        null, options, options[0]);
+                if (selection == 0){
+                    SaveFile save = new SaveFile();
+                    save.writeFile(file.getAbsolutePath(), pContent);
+                }
+            } else {
+                SaveFile save = new SaveFile();
+                save.writeFile(file.getAbsolutePath(), pContent);
+            }
+            return file.getAbsolutePath();
+        }
+        return null;
+    }
     
     protected void loadAuto(Component pParent){
         File file = Utils.loadFilePathDialog("Abrir automata", Utils.getTxtFilter(), "automata.txt", false, pParent);

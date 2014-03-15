@@ -85,18 +85,10 @@ public class GUIAutoHandler {
     }
     
     public void addConnection(String pStartState, String pFinalState, String pKey){
-        if (pStartState.compareTo(pFinalState) == 0){
-            System.out.println("HACER GUI DE ESTADO A SI MISMO");
-        } else {
-            connectTwoStates(pStartState, pFinalState, pKey);
-        }
+        connectTwoStates(pStartState, pFinalState, pKey);
     }
     
     private void connectTwoStates(String pStartState, String pFinalState, String pKey){
-        JConnection dummyConnection = new JConnection(pFinalState, pStartState, pKey, 0, 0, 0, 0, 0);
-        
-        boolean secondConnection = _connections.search(dummyConnection)!=null;
-        
         JState start = _states.search(new JState(pStartState, false,  -1, -1)).getValue();
         JState end = _states.search(new JState(pFinalState, false, -1, -1)).getValue();
         
@@ -115,8 +107,7 @@ public class GUIAutoHandler {
         x2 += x2<x1?3*x2Add:x2Add;
         y2 += y2<y1?3*y2Add:y2Add;
         
-        int connectionType = secondConnection?JConnection.SECOND_CONNECTION:JConnection.FIRST_CONNECTION;
-        JConnection connection = new JConnection(pStartState, pFinalState, pKey, connectionType, x1, y1, x2, y2);
+        JConnection connection = new JConnection(pStartState, pFinalState, pKey, x1, y1, x2, y2);
         _connections.insert(connection);
         addToPane(connection.getArrow(), 3);
         addToPane(connection.getLabel(), 3);

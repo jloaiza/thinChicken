@@ -13,32 +13,31 @@ import javax.swing.JLabel;
  * @author jmloaiza
  */
 public class JConnection implements Comparable<JConnection>{
-    public static final int FIRST_CONNECTION = 0;
-    public static final int SECOND_CONNECTION = 1;
-    private static final int LBL_RELATIVE_LOCATION= 15;
-    
+    private static final int CHAR_SPACE = 15;
     private String _id;
     private JArrow _arrow;
     private JLabel _label;
-    private int _type;
     
-    public JConnection(String pStartState, String pEndState, String pKey, int pConnectionType, int pX1, int pY1, int pX2, int pY2){
+    public JConnection(String pStartState, String pEndState, String pKey, int pX1, int pY1, int pX2, int pY2){
         _id = pStartState + "->" + pEndState;
-        _arrow = new JArrow(pX1, pY1, pX2, pY2);
-        _type = pConnectionType;
-        initLabel(pKey, pX1, pY1, pX2, pY2);
+        if (pStartState.compareTo(pEndState) == 0){
+            _arrow = new JAutoArrow(pX1, pY1);
+            initLabel(pKey, _arrow._x1, _arrow._y1, _arrow._x2, _arrow._y2);
+        } else {
+            _arrow = new JArrow(pX1, pY1, pX2, pY2);
+            initLabel(pKey, pX1, pY1, pX2, pY2);
+        }
+        
     }
     
     private void initLabel(String pKey, int pX1, int pY1, int pX2, int pY2){
         _label = new JLabel(pKey);
         _label.setForeground(_arrow.getColor());
-        int x = pX1>pX2?pX2:pX1 + Math.abs(pX1-pX2)/2 
-                + (_type==FIRST_CONNECTION?-LBL_RELATIVE_LOCATION:LBL_RELATIVE_LOCATION/2);
-        int y = pY1>pY2?pY2:pY1 + Math.abs(pY1-pY2)/2 
-                + (_type==FIRST_CONNECTION?-LBL_RELATIVE_LOCATION:LBL_RELATIVE_LOCATION/2);
+        int x = pX1>pX2?pX2:pX1 + Math.abs(pX1-pX2)/2 - pKey.length()*CHAR_SPACE/2;
+        int y = pY1>pY2?pY2:pY1 + Math.abs(pY1-pY2)/2 - CHAR_SPACE/2;
         _label.setEnabled(true);
         _label.setVisible(true);
-        _label.setBounds(x, y, pKey.length()*15, 15);
+        _label.setBounds(x, y, pKey.length()*CHAR_SPACE, CHAR_SPACE);
     }
 
     public String getID(){
