@@ -53,11 +53,27 @@ public class LoadAutomata
             }
             else if (",".equals(Character.toString(pRead.charAt(_counter))))
             {
-                System.out.println("AGREGANDO: " + estate);
-                add(pOperation,estate);
-                System.out.println(estate);
-                estate = "";
-                _counter++;
+                if(!",".equals(Character.toString(pRead.charAt(_counter-1))))
+                {
+                    System.out.println("AGREGANDO: " + estate);
+                    add(pOperation,estate);
+                    System.out.println(estate);
+                    estate = "";
+                    _counter++;
+                }
+                else
+                {
+                    while(",".equals(Character.toString(pRead.charAt(_counter))))
+                    {
+                        estate = estate + Character.toString(pRead.charAt(_counter));
+                        _counter++;
+                    }
+                    estate = estate.substring(0, estate.length() - 1);
+                    System.out.println("AGREGANDO: " + estate);
+                    add(pOperation,estate);
+                    System.out.println(estate);
+                    estate = "";
+                }
             }
             else
             {

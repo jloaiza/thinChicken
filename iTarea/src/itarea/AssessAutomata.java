@@ -22,7 +22,7 @@ public class AssessAutomata
     private String _readFile;
     private String _direction;
    
-    public synchronized String start()
+    public synchronized String start() throws InterruptedException
     {
         loadFile();
         startAssess(_readFile);
@@ -42,7 +42,7 @@ public class AssessAutomata
         _readFile = _entryFile.readFile(_direction);
     }
     
-    private void startAssess(String pRead)
+    private void startAssess(String pRead) throws InterruptedException
     {
         boolean send = true;
         System.out.println("LECTURA: " + pRead);

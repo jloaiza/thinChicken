@@ -9,6 +9,8 @@ package itarea;
 import gui.StartWindow;
 import gui.GUIAutoHandler;
 import automata.Automata;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -124,11 +126,18 @@ public class Facade {
 
             @Override
             public void run() {
-                AssessAutomata evaluate = new AssessAutomata();
-                evaluate.setDirection(PathRegister.ENTRY_PATH);
-                String exit = evaluate.start();
-                _startWindow.setExitText(exit);
-        // FALTAN COSAS
+                try 
+                {
+                    AssessAutomata evaluate = new AssessAutomata();
+                    evaluate.setDirection(PathRegister.ENTRY_PATH);
+                    String exit = evaluate.start();
+                    _startWindow.setExitText(exit);
+                    // FALTAN COSAS
+                } 
+                catch (InterruptedException ex) 
+                {
+                    Logger.getLogger(Facade.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }).start();
     }
