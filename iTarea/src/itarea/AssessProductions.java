@@ -6,9 +6,6 @@
 
 package itarea;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Yeison
@@ -28,7 +25,6 @@ public class AssessProductions
     private String[] _splitProductions;
     private String[] _temporaryProductions;
     private LoadFile _entryFile = new LoadFile();
-    private LoadFile _exitFile = new LoadFile();
     private LoadFile _productionsFile = new LoadFile();
     private LoadFile _automataFile = new LoadFile();
     
@@ -56,7 +52,6 @@ public class AssessProductions
     {
         _automataFile.resetRead();
         _entryFile.resetRead();
-        _exitFile.resetRead();
         _productionsFile.resetRead();
     }
     
@@ -65,7 +60,7 @@ public class AssessProductions
         String input = "";
         _readFile = _automataFile.readFile(_directionAutomata, "NULL");
         _entrySplitString = _entryFile.readFile(_directionEntry,"NULL").split("\n");
-        _exitSplitString = _exitFile.readFile(_directionExit,"NULL").split("\n");
+        _exitSplitString = _directionExit.split("\n");
         _splitProductions = _productionsFile.readFile(_directionProductions, "NULL").split("\n");
         System.out.println("INICIO DE TEST");
         System.out.println("READ FILE: " + _readFile);
@@ -560,9 +555,9 @@ public class AssessProductions
         _directionEntry = pDirectionEntry;
     }
 
-    public void setDirectionExit(String pDirectionExit) 
+    public void setExit(String pDirectionExit) 
     {
-        _directionExit = pDirectionExit;
+        _directionExit = "\n" + pDirectionExit + "\n";
     }
 
     public void setDirectionProductions(String pDirectionProductions) 
@@ -570,8 +565,8 @@ public class AssessProductions
         _directionProductions = pDirectionProductions;
     }
     
-    private void sendFile()
+    private String sendFile()
     {
-        //enviar;
+        return _finalGenerate;
     }
 }
