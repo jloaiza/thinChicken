@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package itarea;
 
 import automata.Automata;
 
 /**
- *
+ * Clase encargada de pasar los datos del autómata en el archivo
+ * a la clase destinada para ello.
  * @author Yeison
  */
 public class LoadAutomata 
@@ -19,6 +15,9 @@ public class LoadAutomata
     private String _direction;
     private int _counter = 3;
     
+    /**
+     * Función encargada de iniciar la carga del archivo autómata.
+     */
     public synchronized void load()
     {
         loadFile();
@@ -30,23 +29,35 @@ public class LoadAutomata
         resetAll();
     }
     
+    /**
+     * Función encargada de resetear todas las variables importantes
+     * para una futura carga de algún otr autómata.
+     */
     private void resetAll()
     {
         _counter = 3;
         _automataFile.resetRead();
     }
     
+    /**
+     * Función que carga el archivo autómata.
+     */
     private void loadFile()
     {
         _readFile = _automataFile.readFile(_direction, "NULL");
     }
     
+    /**
+     * Función encargada de crear los estados el alfabeto y los estados finales en el autómata.
+     * @param pRead: Archivo desde donde se leen los datos.
+     * @param pCounter: Contador importante en la lógica.
+     * @param pOperation: Tipo de función a realizar (Estado, alfabeto o estado final).
+     */
     private void createBeenAndAlphabetAndFinal(String pRead,int pCounter, String pOperation)
     {
         String estate = "";
         for(int i = pCounter; i < pRead.length(); i++)
         {
-            System.out.println("LETRA: " + pRead.charAt(_counter) + " CONTADOR: " + _counter);
             if("}".equals(Character.toString(pRead.charAt(_counter))) && !",".equals(Character.toString(pRead.charAt(_counter-1))))
             {
                 break;
@@ -55,9 +66,7 @@ public class LoadAutomata
             {
                 if(!",".equals(Character.toString(pRead.charAt(_counter-1))))
                 {
-                    System.out.println("AGREGANDO: " + estate);
                     add(pOperation,estate);
-                    System.out.println(estate);
                     estate = "";
                     _counter++;
                 }
@@ -69,9 +78,7 @@ public class LoadAutomata
                         _counter++;
                     }
                     estate = estate.substring(0, estate.length() - 1);
-                    System.out.println("AGREGANDO: " + estate);
                     add(pOperation,estate);
-                    System.out.println(estate);
                     estate = "";
                 }
             }
@@ -82,29 +89,34 @@ public class LoadAutomata
             }
         }
         add(pOperation,estate);
-        System.out.println("AGREGANDO: " + estate);
         _counter = _counter + 3;
-        System.out.println(estate);
     }
     
+    /**
+     * Función encarga de enviar al autómata el estado el alfabeto o estado final.
+     * @param pOperation: Tipo de dato a agregar.
+     * @param pState: Dato a agregar.
+     */
     private void add(String pOperation, String pState)
     {
         switch (pOperation)
         {
             case "Been":
                 Automata.getInstance().newState(pState);
-                System.out.println("here:"+pState);
                 break;
             case "Alphabet":
                 Automata.getInstance().addWordToAlphabet(pState);
                 break;
             case "Final":
                 Automata.getInstance().setFinalState(pState);
-                System.out.println("here2:"+pState);
                 break;
         }
     }
     
+    /**
+     * Función encargada de setear los estados iniciales.
+     * @param pRead: Variable desde donde se leen los datos.
+     */
     private void setInitialBeen(String pRead)
     {
         _counter--;
@@ -128,13 +140,12 @@ public class LoadAutomata
             }
         }
         Automata.getInstance().setInitialState(initialstate); 
-        //NO
-        System.out.println("ESTADO INICIAL: " + initialstate);
-        System.out.println("LETRA: " + pRead.charAt(_counter) + " CONTADOR: " + _counter);
-        System.out.println(_counter);
-        //NO
     }
     
+    /**
+     * Función encarga de setear las transiciones en el autómata.
+     * @param pRead: Variable desde donde se leen los datos.
+     */
     private void setTransition(String pRead)
     {
         String aux = "";
@@ -157,7 +168,6 @@ public class LoadAutomata
                       {
                           if(!",".equals(Character.toString(pRead.charAt(_counter-1))))
                           {
-                              System.out.println("AUXILIAR: " + aux);
                               beenone = aux;
                               aux = "";
                               _counter++;
@@ -175,7 +185,6 @@ public class LoadAutomata
                               }
                               if(flag == true)
                               {
-                                  System.out.println("ESTADO: " + aux.substring(0, aux.length()));
                                   beenone = aux.substring(0, aux.length());
                                   aux = "";
                               }
@@ -197,12 +206,6 @@ public class LoadAutomata
                 }
                 beentwo = beentwo.substring(0, beentwo.length()-1);
                 _counter--;
-                //NO
-                System.out.println(beenone);
-                System.out.println(beentwo);
-                System.out.println(value);
-                System.out.println("LETRA: " + pRead.charAt(_counter) + " CONTADOR: " + _counter);
-                //NO
                 Automata.getInstance().addTransition(beenone, beentwo, value);
                 beenone = "";
                 beentwo = "";
@@ -211,11 +214,12 @@ public class LoadAutomata
             }
             _counter++;
         }
-        System.out.println("SALI TRANSITION");
-        System.out.println("LETRA: " + pRead.charAt(_counter) + " CONTADOR: " + _counter);
-        System.out.println("SALI TRANSITION");
     }
     
+    /**
+     * Función encarga de setear la dirección del archivo desde donde se leeran los datos.
+     * @param pDirection: Dirección del archivo.
+     */
     public void setDirection(String pDirection)
     {
         _direction = pDirection;

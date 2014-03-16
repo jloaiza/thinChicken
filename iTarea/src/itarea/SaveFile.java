@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package itarea;
 
 import java.io.*;
 
 /**
- *
+ * Función que guarda los archivos en el disco duro.
  * @author Yeison
  */
 public class SaveFile 
@@ -18,7 +13,12 @@ public class SaveFile
     private FileWriter _fileWriter;
     private BufferedWriter _writerBuffer;
     private PrintWriter _writer; 
-            
+    
+    /**
+     * Función que dado una cadena la convierte en un archivo y la guarda.
+     * @param pDirection: Dirección donde se guardara el archivo.
+     * @param pText: Texto a escribir en el archivo.
+     */
     public void writeFile(String pDirection, String pText)
     {
         try

@@ -5,7 +5,7 @@ import java.io.*;
 
 
 /**
- *
+ * Clase encargada de cargar los archivos.
  * @author Yeison
  */
 public class LoadFile 
@@ -15,6 +15,12 @@ public class LoadFile
     private BufferedReader _readBuffer;
     private String _read = "";
     
+    /**
+     * Función que lee un archivo a partir de una dirección absoluta.
+     * @param pDirection: Dirección del archivo.
+     * @param pEntry: Tipo de función a tratar.
+     * @return: Lectura del archivo.
+     */
     public String readFile(String pDirection,String pEntry)
     {
         try
@@ -56,6 +62,11 @@ public class LoadFile
         }
     }
     
+    /**
+     * Función que remueve cualquier espacio innecesario en la carga del archivo.
+     * @param pWord: Palabra de la cual remover espacios.
+     * @return: Palabra sin espacios.
+     */
     private String removeSpace(String pWord)
     {
         String aux = "";
@@ -69,6 +80,9 @@ public class LoadFile
         return aux;
     }
     
+    /**
+     * Función que resetea la última lectura realizada de un archivo.
+     */
     public void resetRead()
     {
         _read = "";

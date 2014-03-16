@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package itarea;
 
 /**
- *
+ * Clase que inicia la evalución de las entradas permitidas con las producciones.
  * @author Yeison
  */
 public class AssessProductions 
@@ -28,6 +23,9 @@ public class AssessProductions
     private LoadFile _productionsFile = new LoadFile();
     private LoadFile _automataFile = new LoadFile();
     
+    /**
+     * Función que inicia la evaluación de las entradas.
+     */
     public synchronized void start()
     {
         createInputString();
@@ -38,6 +36,9 @@ public class AssessProductions
         resetVariables();
     }
     
+    /**
+     * Función que resetea todas las variables utilizadas para una futura evaluación.
+     */
     private void resetVariables()
     {
         _entrySplitString = null;
@@ -48,6 +49,10 @@ public class AssessProductions
         _finalGenerate = "";
     }
     
+    /**
+     * Función que resetea todos los buffers de lectura para los archivos 
+     * por si hubiera la necesidad de volver a leer alguno.
+     */
     private void resetBuffers()
     {
         _automataFile.resetRead();
@@ -55,6 +60,10 @@ public class AssessProductions
         _productionsFile.resetRead();
     }
     
+    /**
+     * Función que crea todas las variables junto con sus datos correspondientes
+     * para iniciar las evaluaciones.
+     */
     private void createInputString()
     {
         String input = "";
@@ -81,6 +90,9 @@ public class AssessProductions
         //NO
     }
     
+    /**
+     * Función que inicia la evaluación una por una junto con las producciones.
+     */
     private void startAssess()
     {
         for(int i = 0; i < _inputSplitString.length; i++)
@@ -167,6 +179,12 @@ public class AssessProductions
         //NO
     }
     
+    /**
+     * Función que dada una palabra retorna los posibles caminos que puede tomar
+     * a partir de las producciones (Backtracking).
+     * @param pCharacter: Palabra a evaluar.
+     * @return: Retorna el resultado de la evaluación.
+     */
     private String[] extractProduction(String pCharacter)
     {
         String[] splitproductions = null;
@@ -200,6 +218,11 @@ public class AssessProductions
         return splitproductions;
     }
     
+    /**
+     * Función que dado un arreglo retorna si el mismo esta vacio o no.
+     * @param pArray: Recibe un arreglo de strings.
+     * @return: Valor de verdad, true si es vacio o false sino lo esta.
+     */
     private boolean isEmptyArray(String[] pArray)
     {
         boolean text = false;
@@ -216,6 +239,12 @@ public class AssessProductions
         return !text;
     }
     
+    /**
+     * Función que dado un arreglo de producciones retorna la menor que se encuentra
+     * dentro del mismo.
+     * @param pArray: Arreglo de producciones.
+     * @return: La producción menor dentro del arreglo.
+     */
     private String extractProductionArray(String[] pArray)
     {
         if(isEmptyArray(pArray))
@@ -240,6 +269,12 @@ public class AssessProductions
         }
     }
     
+    /**
+     * Función que dado una palabra retorna su equivalente a la izquierda de -> 
+     * en la producción.
+     * @param pLine: Palabra a comparar.
+     * @return: La producción.
+     */
     private String ultimateProduction(String pLine)
     {
         String finalproduction = "";
@@ -256,6 +291,9 @@ public class AssessProductions
         return finalproduction;   
     }
     
+    /**
+     * Función que se encarga de crear un alfabeto para poder comparar.
+     */
     private void createAlphabet()
     {
         int counter = 3;
@@ -287,6 +325,13 @@ public class AssessProductions
         _alphabetSplit = alphabet.split("\n");
     }
     
+    /**
+     * Función que apartir de un index va recorriendo una cadena y retorna la siguiente palabra
+     * en la cadena que pertenezca al alfabeto.
+     * @param pChain: Cadena donde se itera.
+     * @param pIndex: Index desde donde se comienza a iterar.
+     * @return: La siguiente palabra en la cadena.
+     */
     private int giveMeAWord(String pChain, int pIndex)
     {
         System.out.println("ENTRO CON " + pIndex);
@@ -315,6 +360,12 @@ public class AssessProductions
         return index;
     }
     
+    /**
+     * Función que dada una cadena, le quita todas las palabras
+     * que se encuentren en el alfabeto y retorna la cadena sin ellas.
+     * @param pWord: Palabra desde donde se remueven las palabras del alfabeto.
+     * @return: Cadena con las palabras removidas.
+     */
     private String removeWords(String pWord)
     {
         for(int i = 0; i < _alphabetSplit.length; i++)
@@ -327,6 +378,12 @@ public class AssessProductions
         return pWord;
     }
     
+    /**
+     * Retorna un valor de verdad si la palabra recibida se encuentra
+     * en el alfabeto o no.
+     * @param pWord: Palabra a buscar en el alfabeto.
+     * @return: Valor de verdad, true si se encuentra, false sino lo esta.
+     */
     private boolean isInAlphabet(String pWord)
     {
         boolean aux = false;
@@ -341,6 +398,12 @@ public class AssessProductions
         return aux;
     }
     
+    /**
+     * Función que controla si una entrada contiene palabras repetidas,
+     * y comprueba contra las producciones si esto es valido en alguna.
+     * @param pCharacter: Palabra a comprobar.
+     * @return: Palabra final luego de ser comprobada.
+     */
     private String limitControl(String pCharacter)
     {
         System.out.println("ESTAMOS EN LIMIT CONTROL CON: " + pCharacter);
@@ -401,6 +464,12 @@ public class AssessProductions
         }  
     }
     
+    /**
+     * Función que aproxima el index de una producción hasta -> mas uno.
+     * @param pProduction: Producción a aproximar.
+     * @param pCharacter: Caracter a aproximar.
+     * @return: Index hasta la aproximación.
+     */
     public int approachTheCharacter(String pProduction, String pCharacter)
     {
         int counter = 0;
@@ -419,6 +488,11 @@ public class AssessProductions
         return counter;
     }
     
+    /**
+     * Función que dado que retorna el equivalente a una producción, lo que esta luego de ->.
+     * @param pProduction: Producción a extraer el equivalente.
+     * @return: El equivalente.
+     */
     private String giveMeProduction(String pProduction)
     {
         String finalproduction = "";
@@ -434,6 +508,12 @@ public class AssessProductions
         return finalproduction;
     }
     
+    /**
+     * Función que dada una palabra, retorna su equivalente en la producción, es decir
+     * lo que esta a la izquierda de ->
+     * @param pValue: Palabra a utilizar.
+     * @return: El equivalente.
+     */
     private String giveMeValueProduction(String pValue)
     {
         String finalvalue = "";
@@ -448,6 +528,12 @@ public class AssessProductions
         return finalvalue;
     }
     
+    /**
+     * Función que acomoda un arreglo de string desde la palabra mas grande a la 
+     * más pequeña.
+     * @param pWords: Arreglo a acomodar.
+     * @return: Arreglo acomodado.
+     */
     private String[] accommodateWords(String[] pWords)
     {
         int[] intarray = new int[pWords.length];
@@ -464,6 +550,11 @@ public class AssessProductions
         return makeTupla(intarray, pWords).split("/");
     }
     
+    /**
+     * Función que invierte un arreglo.
+     * @param pArray: Arreglo a invertir.
+     * @return: Arreglo invertido.
+     */
     private int[] investArray(int[] pArray)
     {
         int[]auxArray = new int[pArray.length];
@@ -474,6 +565,12 @@ public class AssessProductions
         return auxArray;
     }
     
+    /**
+     * Función que hace un tupla entre una producción y su equivalente en numeros enteros (B,5).
+     * @param pArrayInt: Arreglo de enteros.
+     * @param pArrayString: Arreglo de String.
+     * @return: El string en forma de tupla.
+     */
     private String makeTupla(int[] pArrayInt, String[] pArrayString)
     {
         String aux = "";
@@ -494,6 +591,11 @@ public class AssessProductions
         return aux;
     }
     
+    /**
+     * Función que acomoda un arreglo de enteros de menor a mayor.
+     * @param pArray: Arreglo de enteros a ordenar.
+     * @return: Arreglo ordenado.
+     */
     private int[] sortArray(int[] pArray)
     {
         int aux;
@@ -512,6 +614,12 @@ public class AssessProductions
         return pArray;
     }
     
+    /**
+     * Función que dada una cadena me retorna el número de palabras en el alfabeto
+     * que tiene dentro de ella.
+     * @param pCharacter: Palabra a evaluar.
+     * @return: Número de palabras.
+     */
     private int numberOfWords(String pCharacter)
     {
         int counter = 0;
@@ -524,6 +632,12 @@ public class AssessProductions
         return counter;
     }
     
+    /**
+     * Función que aplica un modulo a una palabra dependiendo de su cantidad de caracteres.
+     * @param pModules: Arreglo de donde se sacan las palabras para aplicar módulo.
+     * @param pNumber: Módulo a aplicar.
+     * @return: Devuelve la palabra con el módulo aplicado.
+     */
     private String aplyModule(String[] pModules, int pNumber)
     {
         String auxfinal = "";
@@ -545,26 +659,46 @@ public class AssessProductions
         
     }
     
+    /**
+     * Función que setea la dirección del archivo autómata.
+     * @param pDirectionAutomata: Dirección del archivo autómata.
+     */
     public void setDirectionAutomata(String pDirectionAutomata) 
     {
         _directionAutomata = pDirectionAutomata;
     }
 
+    /**
+     * Función que setea la dirección del archivo de entradas.
+     * @param pDirectionEntry: Dirección del archivo de entradas.
+     */
     public void setDirectionEntry(String pDirectionEntry) 
     {
         _directionEntry = pDirectionEntry;
     }
 
+    /**
+     * Función que setea el string con las salidas ya evaluadas.
+     * @param pDirectionExit: String con la evaluación.
+     */
     public void setExit(String pDirectionExit) 
     {
         _directionExit = "\n" + pDirectionExit + "\n";
     }
 
+    /**
+     * Función que setea la dirección del archivo de producciones.
+     * @param pDirectionProductions: Dirección del archivo de producciones..
+     */
     public void setDirectionProductions(String pDirectionProductions) 
     {
         _directionProductions = pDirectionProductions;
     }
     
+    /**
+     * Función que devuelve la variable con todas las evaluaciones realizadas.
+     * @return: Variale con las evaluaciones.
+     */
     private String sendFile()
     {
         return _finalGenerate;
