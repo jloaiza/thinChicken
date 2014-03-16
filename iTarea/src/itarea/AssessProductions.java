@@ -26,14 +26,15 @@ public class AssessProductions
     /**
      * Función que inicia la evaluación de las entradas.
      */
-    public synchronized void start()
+    public synchronized String start()
     {
         createInputString();
         resetBuffers();
         createAlphabet();
         startAssess();
-        sendFile();
+        String temp = _finalGenerate;
         resetVariables();
+        return temp;
     }
     
     /**
@@ -693,14 +694,5 @@ public class AssessProductions
     public void setDirectionProductions(String pDirectionProductions) 
     {
         _directionProductions = pDirectionProductions;
-    }
-    
-    /**
-     * Función que devuelve la variable con todas las evaluaciones realizadas.
-     * @return: Variale con las evaluaciones.
-     */
-    private String sendFile()
-    {
-        return _finalGenerate;
     }
 }

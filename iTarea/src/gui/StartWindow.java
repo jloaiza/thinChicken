@@ -7,19 +7,14 @@
 package gui;
 
 import itarea.Facade;
-import itarea.LoadFile;
 import itarea.PathRegister;
 import itarea.SaveFile;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -38,7 +33,7 @@ public final class StartWindow extends javax.swing.JFrame {
     private int _scrollValue;
     
     private final panPalette _palette;
-    private GUIAutoHandler _guiAutoHandler;
+    private final GUIAutoHandler _guiAutoHandler;
     
     /**
      * Creates new form StartWindow
@@ -612,7 +607,6 @@ public final class StartWindow extends javax.swing.JFrame {
 
     private void bttCompileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCompileMouseClicked
         boolean inDebug = debugMode.isSelected();
-        clearExitAndProdText();
         compile(inDebug);
     }//GEN-LAST:event_bttCompileMouseClicked
     
@@ -671,6 +665,7 @@ public final class StartWindow extends javax.swing.JFrame {
     }
     
     protected void compile(boolean pDebugMode){
+        clearExitAndProdText();
         Facade.getInstance().evaluateEntry(pDebugMode);
     }
     

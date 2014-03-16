@@ -132,7 +132,14 @@ public class Facade {
                     evaluate.setDirection(PathRegister.ENTRY_PATH);
                     String exit = evaluate.start();
                     _startWindow.setExitText(exit);
-                    // FALTAN COSAS
+                    
+                    AssessProductions prod = new AssessProductions();
+                    prod.setDirectionAutomata(PathRegister.AUTOMATA_PATH);
+                    prod.setDirectionEntry(PathRegister.ENTRY_PATH);
+                    prod.setDirectionProductions(PathRegister.PRODUCTIONS_PATH);
+                    prod.setExit(exit);
+                    String gen = prod.start();
+                    _startWindow.setProdText(gen);
                 } 
                 catch (InterruptedException ex) 
                 {
