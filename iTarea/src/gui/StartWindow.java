@@ -109,6 +109,10 @@ public final class StartWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        confProd = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        txProdDir = new javax.swing.JTextField();
+        bttAbrir = new javax.swing.JButton();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         bttSaveProd = new javax.swing.JLabel();
         bttSaveExit = new javax.swing.JLabel();
@@ -142,6 +146,52 @@ public final class StartWindow extends javax.swing.JFrame {
         lblViewerAuto = new javax.swing.JLabel();
         panAutomata = new javax.swing.JLayeredPane();
         bkg = new javax.swing.JLabel();
+
+        confProd.setResizable(false);
+        confProd.setSize(475, 100);
+        confProd.setTitle("Archivo de producciones");
+        confProd.setLocationRelativeTo(null);
+
+        jLabel2.setText("Archivo de producciones:");
+
+        txProdDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txProdDirActionPerformed(evt);
+            }
+        });
+
+        bttAbrir.setText("Abrir");
+        bttAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttAbrirActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout confProdLayout = new javax.swing.GroupLayout(confProd.getContentPane());
+        confProd.getContentPane().setLayout(confProdLayout);
+        confProdLayout.setHorizontalGroup(
+            confProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(confProdLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(confProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(confProdLayout.createSequentialGroup()
+                        .addComponent(txProdDir, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bttAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        confProdLayout.setVerticalGroup(
+            confProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(confProdLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(confProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txProdDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bttAbrir))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MiniCompilador");
@@ -436,7 +486,8 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bttSaveEntryMouseClicked
 
     private void bttEditAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttEditAutoMouseClicked
-        
+        confProd.setVisible(true);
+        confProd.setEnabled(true);
     }//GEN-LAST:event_bttEditAutoMouseClicked
 
     private void bttCleanAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCleanAutoMouseClicked
@@ -586,6 +637,22 @@ public final class StartWindow extends javax.swing.JFrame {
         containerAutomata.remove(panAutomata);
         (new AutoViewer(this)).setVisible(true);
     }//GEN-LAST:event_bttAutoViewerMouseClicked
+
+    private void txProdDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txProdDirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txProdDirActionPerformed
+
+    private void bttAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAbrirActionPerformed
+        File file = Utils.loadFilePathDialog("Abrir producciones", Utils.getTxtFilter(), "producciones.txt", false, this);
+        if (file != null){
+            if (!file.exists()){
+                JOptionPane.showMessageDialog(null, "No se ha encontrado el archivo "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                PathRegister.PRODUCTIONS_PATH = file.getAbsolutePath();
+                txProdDir.setText(file.getAbsolutePath());
+            }
+        }
+    }//GEN-LAST:event_bttAbrirActionPerformed
     
     private void clearExitAndProdText(){
         textExit.setText("");
@@ -735,6 +802,7 @@ public final class StartWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bkg;
+    private javax.swing.JButton bttAbrir;
     private javax.swing.JLabel bttAutoViewer;
     private javax.swing.JLabel bttCleanAuto;
     private javax.swing.JLabel bttCompile;
@@ -751,8 +819,10 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JLabel bttSlider1;
     private javax.swing.JLabel bttSlider2;
     private javax.swing.JLabel bttUpS2;
+    private javax.swing.JDialog confProd;
     private javax.swing.JPanel containerAutomata;
     private javax.swing.JCheckBox debugMode;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLabel lblAutomata;
     private javax.swing.JLabel lblEntry;
@@ -767,5 +837,6 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JTextArea textEntry;
     private javax.swing.JTextArea textExit;
     private javax.swing.JTextArea textProd;
+    private javax.swing.JTextField txProdDir;
     // End of variables declaration//GEN-END:variables
 }
