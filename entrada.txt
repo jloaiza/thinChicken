@@ -1,3 +1,7 @@
-while
-while(a==true)instrucciones;
-while(az==true)instrucciones;
+1100
+1
+0
+123
+110
+1001
+101

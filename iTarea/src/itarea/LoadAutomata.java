@@ -204,7 +204,10 @@ public class LoadAutomata
                     beentwo = beentwo + Character.toString(pRead.charAt(_counter));
                     _counter++;
                 }
-                beentwo = beentwo.substring(0, beentwo.length()-1);
+                if(!"}".equals(Character.toString(pRead.charAt(_counter))))
+                {
+                    beentwo = beentwo.substring(0, beentwo.length()-1);
+                }
                 _counter--;
                 Automata.getInstance().addTransition(beenone, beentwo, value);
                 beenone = "";
