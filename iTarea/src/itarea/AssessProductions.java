@@ -312,9 +312,23 @@ public class AssessProductions
             }
             else if (",".equals(Character.toString(_readFile.charAt(i))))
             {
-                System.out.println("ALPHABETO: " + alphabet);
-                alphabet = alphabet + "\n";
-                System.out.println(alphabet);
+                if(!",".equals(Character.toString(_readFile.charAt(i-1))))
+                {
+                    System.out.println("AGREGANDO ALFABETO: " + alphabet);
+                    alphabet = alphabet + "\n";
+                }
+                else
+                {
+                    while(",".equals(Character.toString(_readFile.charAt(i))))
+                    {
+                        alphabet = alphabet + Character.toString(_readFile.charAt(i));
+                        i++;
+                    }
+                    alphabet = alphabet.substring(0, alphabet.length() - 1);
+                    System.out.println("AGREGANDO ALFABETO 2: " + alphabet);
+                    i--;
+                    alphabet = alphabet + "\n";
+                }
             }
             else
             {
