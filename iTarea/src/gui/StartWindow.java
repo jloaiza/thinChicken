@@ -32,7 +32,6 @@ public final class StartWindow extends javax.swing.JFrame {
     
     private int _scrollValue;
     
-    private final panPalette _palette;
     private final GUIAutoHandler _guiAutoHandler;
     
     /**
@@ -44,12 +43,6 @@ public final class StartWindow extends javax.swing.JFrame {
         _onEditMode = false;
         _onScroll = false;
         _scrollValue = 0;
-        _palette = new panPalette(this);
-        _palette.setBounds(660, 25, _palette.getPreferredSize().width, _palette.getPreferredSize().height);
-        jLayeredPane1.add(_palette);
-        jLayeredPane1.setLayer(_palette, javax.swing.JLayeredPane.PALETTE_LAYER);        
-        
-        onEditMode(false);
         
         this.setLocationRelativeTo(null);
         
@@ -94,30 +87,6 @@ public final class StartWindow extends javax.swing.JFrame {
         bttSlider1.setEnabled(false);
         bttSlider2.setVisible(false);
         bttSlider2.setEnabled(false);
-    }
-    
-    protected void onEditMode(boolean pOnEdit){
-        if (pOnEdit){
-            _onEditMode = true;
-            _palette.setVisible(true);
-            _palette.setEnabled(true);
-            _palette.requestFocus();
-            
-            scrollEntry.setVisible(false);
-            scrollExit.setVisible(false);
-            scrollProd.setVisible(false);
-        } else {
-            _onEditMode = false;
-            _palette.setVisible(false);
-            _palette.setEnabled(false);
-            
-            scrollEntry.setVisible(true);
-            scrollExit.setVisible(true);
-            scrollProd.setVisible(true);
-            
-            this.requestFocus();
-        }
-            
     }
     
     public void setExitText(String pExit){
@@ -467,7 +436,7 @@ public final class StartWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_bttSaveEntryMouseClicked
 
     private void bttEditAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttEditAutoMouseClicked
-        onEditMode(true);
+        
     }//GEN-LAST:event_bttEditAutoMouseClicked
 
     private void bttCleanAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCleanAutoMouseClicked
@@ -658,6 +627,7 @@ public final class StartWindow extends javax.swing.JFrame {
             if (!file.exists()){
                 JOptionPane.showMessageDialog(pParent, "No se ha encontrado el archivo de entrada "+file.getName(), "Error", JOptionPane.ERROR_MESSAGE);
             } else {
+                PathRegister.AUTOMATA_PATH = file.getAbsolutePath();
                 Facade.getInstance().setAutomataPath(file.getAbsolutePath());
                 Facade.getInstance().loadAutomata();
             }
