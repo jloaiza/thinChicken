@@ -72,23 +72,14 @@ public class AssessProductions
         _entrySplitString = _entryFile.readFile(_directionEntry,"NULL").split("\n");
         _exitSplitString = _directionExit.split("\n");
         _splitProductions = _productionsFile.readFile(_directionProductions, "NULL").split("\n");
-        System.out.println("INICIO DE TEST");
-        System.out.println("READ FILE: " + _readFile);
-        System.out.println("ENTRY SPLIT: " + _entrySplitString[0] + " " + _entrySplitString[1] + " " + _entrySplitString[2] + " " + _entrySplitString[3]);
-        System.out.println("EXIT SPLIT STRING: " + _exitSplitString[0] + " " + _exitSplitString[1] + " " + _exitSplitString[2] + " " + _exitSplitString[3]);
-        System.out.println("FIN DE TEST");
         for(int i = 1; i < _entrySplitString.length; i++)
         {
             if("OK".equals(_exitSplitString[i]))
             {
-                System.out.println("INDICE: " + i);
                 input = input + _entrySplitString[i] + "\n";
             }
         }
         _inputSplitString = input.split("\n");
-        //NO
-        System.out.println("EL INPUT ES EL SIGUIENTE: " + input);
-        //NO
     }
     
     /**
@@ -98,30 +89,18 @@ public class AssessProductions
     {
         for(int i = 0; i < _inputSplitString.length; i++)
         {
-            System.out.println("CAMBIAMOS DE LINEA DE ENTRADA A: " + _inputSplitString[i]);
             String auxgenerate = "";
             String auxcharacter = "";
             int after = 0;
             for(int j = 0; j < _inputSplitString[i].length(); j++)
             {
                 int nextindex = giveMeAWord(_inputSplitString[i],j);
-                //NO
-                System.out.println("INDEX");
-                System.out.println(nextindex);
-                System.out.println(j);
-                //NO
                 int advancement = 0;
                 String character = "";
                 character = _inputSplitString[i].substring(j, nextindex);
                 advancement = nextindex - j;
                 j = nextindex;
-                System.out.println(advancement);
                 auxcharacter = auxcharacter + character;
-                //NO
-                System.out.println("AUX");
-                System.out.println(auxcharacter);
-                System.out.println("AUX");
-                //NO
                 String[] auxsplit = null;
                 auxsplit = extractProduction(auxcharacter);
                 if (isEmptyArray(auxsplit))
@@ -129,13 +108,9 @@ public class AssessProductions
                     String finalproduction = extractProductionArray(_temporaryProductions);
                     if(!"".equals(finalproduction))
                     {
-                        System.out.println("J VALE: " + j);
                         String subauxcharacter = _inputSplitString[i].substring(after, j - advancement);
-                        System.out.println("SUBCHARACTER: " + subauxcharacter);
-                        System.out.println("PRODUCCION ENVIADDA: " + finalproduction);
                         if(subauxcharacter.length() < giveMeProduction(finalproduction).length())
                         {
-                            System.out.println("ENTRO CARAJO");
                             finalproduction = limitControl(subauxcharacter);
                         }
                         if("e".equals(finalproduction))
@@ -149,35 +124,20 @@ public class AssessProductions
                         }
                         j = j - advancement;
                         after = j;
-                        System.out.println("AFTER: " + after);
                     }
                     else
                     {
-                        System.out.println("TEST: " + auxgenerate);
                         auxgenerate = auxgenerate + "e";
                         break;
                     }
                     auxcharacter = "";
                 }
                 _temporaryProductions = auxsplit;
-                //NO
-                System.out.println("SEMIFINAL");
-                System.out.println(auxgenerate);
-                System.out.println("SEMIFINAL");
-                //NO
                 j--;
             }
             auxgenerate = auxgenerate + ultimateProduction(auxcharacter);
-            //NO
-            System.out.println("AUXCHARACTER: " + auxcharacter);
-            //NO
             _finalGenerate = _finalGenerate + auxgenerate + "\n";
         }
-        //NO
-        System.out.println("FINAL");
-        System.out.println(_finalGenerate);
-        System.out.println("FINAL");
-        //NO
     }
     
     /**
@@ -193,27 +153,15 @@ public class AssessProductions
         for(int i = 1; i < _splitProductions.length; i++)
         {
             int counter = approachTheCharacter(_splitProductions[i],">");
-            //NO
-            System.out.println(pCharacter);
-            System.out.println(counter);
-            //NO
             String auxcomparision = "";
             if(counter + pCharacter.length() <= _splitProductions[i].length())
             {
                 auxcomparision = _splitProductions[i].substring(counter, counter + pCharacter.length());
             }
-            //NO
-            System.out.println(auxcomparision);
-            //NO
             if(auxcomparision.equals(pCharacter))
             {
                 productions = productions + _splitProductions[i].substring(0 , counter - 2) + "/";
             }
-            //NO
-            System.out.println("PRODU");
-            System.out.println(productions);
-            System.out.println("PRODU");
-            //NO
         }
         splitproductions = productions.split("/");
         return splitproductions;
@@ -314,7 +262,6 @@ public class AssessProductions
             {
                 if(!",".equals(Character.toString(_readFile.charAt(i-1))))
                 {
-                    System.out.println("AGREGANDO ALFABETO: " + alphabet);
                     alphabet = alphabet + "\n";
                 }
                 else
@@ -325,7 +272,6 @@ public class AssessProductions
                         i++;
                     }
                     alphabet = alphabet.substring(0, alphabet.length() - 1);
-                    System.out.println("AGREGANDO ALFABETO 2: " + alphabet);
                     i--;
                     alphabet = alphabet + "\n";
                 }
@@ -336,7 +282,6 @@ public class AssessProductions
             }
         }
         alphabet = alphabet + "\n";
-        System.out.println("ALFABETO FINAL: " + alphabet);
         _alphabetSplit = alphabet.split("\n");
     }
     
@@ -349,8 +294,6 @@ public class AssessProductions
      */
     private int giveMeAWord(String pChain, int pIndex)
     {
-        System.out.println("ENTRO CON " + pIndex);
-        System.out.println("LA LINEA ES: " + pChain + " Con una longitud: " + pChain.length());
         String aux = "";
         int index = 0;
         for(int i = pIndex; i <= pChain.length(); i++)
@@ -364,12 +307,10 @@ public class AssessProductions
             {
                 aux = aux + Character.toString(pChain.charAt(i));
             }
-            System.out.println("EL AUX ES: " + aux);
         }
         if(!isInAlphabet(aux))
         {
             String remove = removeWords(aux);
-            System.out.println("FUNCIONA: " + remove);
             index = pIndex + remove.length() +1;
         }
         return index;
@@ -421,7 +362,6 @@ public class AssessProductions
      */
     private String limitControl(String pCharacter)
     {
-        System.out.println("ESTAMOS EN LIMIT CONTROL CON: " + pCharacter);
         String finalproduction = "";
         String midproduction = "";
         for(int i = 1; i < _splitProductions.length; i++)
@@ -430,26 +370,21 @@ public class AssessProductions
             if(_splitProductions[i].length() < counter + pCharacter.length())
             {
                 String assess = pCharacter.substring(0,giveMeAWord(pCharacter, 0));
-                System.out.println("ASSESS: " + assess);
                 String production = _splitProductions[i];
-                System.out.println("PRODUCTION: " + production);
                 boolean serieflag = true;
                 int repeatcounter = 0;
                 for(int j = counter; j<_splitProductions[i].length();j++)
                 {
-                    System.out.println("COUNTEEER: " + counter);
                     if(_splitProductions[i].substring(counter, giveMeAWord(production, counter)).equals(assess))
                     {
                         repeatcounter++;
                         counter = giveMeAWord(production, counter);
                         j = counter;
-                        System.out.println("J ESSSSSS: " + j);
                     }
                     else
                     {
                         counter = giveMeAWord(production, counter);
                         j= counter;
-                        System.out.println("J ESSSSSS: " + j);
                         serieflag = false;
                         break;
                     }
@@ -460,11 +395,8 @@ public class AssessProductions
                     midproduction = midproduction + _splitProductions[i].substring(0, approachTheCharacter(production,">")-2) + "=" + Integer.toString(repeatcounter) + "/";
                 }
             }
-            System.out.println("MID PRODUCTION");
-            System.out.println(midproduction);
         }
         String[] midproductionsplit = midproduction.split("/");
-        System.out.println(midproductionsplit.length);
         if(midproductionsplit.length == 1 && "".equals(midproductionsplit[0]))
         {
             return "e";
@@ -472,7 +404,6 @@ public class AssessProductions
         else
         {
             midproductionsplit = accommodateWords(midproductionsplit);
-            System.out.println("PALABRAS ACOMODADAS: " + midproductionsplit[0]);
             int numberofwords = numberOfWords(pCharacter);
             finalproduction = aplyModule(midproductionsplit, numberofwords);
             return finalproduction; 
@@ -519,7 +450,6 @@ public class AssessProductions
                 finalproduction = _splitProductions[i].substring(counter, _splitProductions[i].length());
             }
         }
-        System.out.println("FINAL PRODUCTION: " + finalproduction);
         return finalproduction;
     }
     
@@ -660,16 +590,13 @@ public class AssessProductions
         {
             int index = approachTheCharacter(pModules[i], "=");
             int value = Integer.parseInt(pModules[i].substring(index, pModules[i].length()));
-            System.out.println("pNumber: " + pNumber + " Y value: " + value);
             int amount = pNumber/value;
-            System.out.println("AMOUNT: " + amount);
             pNumber = pNumber - (value * amount);
             for(int j = 0; j < amount; j++)
             {
                 auxfinal = auxfinal + pModules[i].substring(0,index-1);
             }
         }
-        System.out.println("AUXFINAL:  " + auxfinal);
         return auxfinal;
         
     }
