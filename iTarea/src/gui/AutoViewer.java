@@ -45,10 +45,8 @@ public class AutoViewer extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         bttCompile = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         bttOpen = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         debugMode = new javax.swing.JCheckBox();
         onTop = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
@@ -88,29 +86,35 @@ public class AutoViewer extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jPanel1.setBackground(new java.awt.Color(230, 230, 230));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1R.png"))); // NOI18N
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1L.png"))); // NOI18N
 
         bttCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttCompile.png"))); // NOI18N
+        bttCompile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bttCompile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bttCompileMouseClicked(evt);
             }
         });
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttClean.png"))); // NOI18N
-
         bttOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttOpen.png"))); // NOI18N
+        bttOpen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bttOpen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bttOpenMouseClicked(evt);
             }
         });
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttEdit.png"))); // NOI18N
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttSave.png"))); // NOI18N
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttP.png"))); // NOI18N
+        jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel8MousePressed(evt);
+            }
+        });
 
         debugMode.setText("Paso a paso");
 
@@ -131,15 +135,11 @@ public class AutoViewer extends javax.swing.JFrame {
                 .addComponent(bttCompile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(debugMode)
-                .addGap(48, 48, 48)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
+                .addGap(93, 93, 93)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addComponent(bttOpen)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
                 .addComponent(onTop)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1))
@@ -150,10 +150,8 @@ public class AutoViewer extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
                             .addComponent(bttOpen)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel8))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel1)
@@ -169,6 +167,8 @@ public class AutoViewer extends javax.swing.JFrame {
                         .addComponent(onTop)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel2.setBackground(new java.awt.Color(230, 230, 230));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider2D.png"))); // NOI18N
 
@@ -261,6 +261,10 @@ public class AutoViewer extends javax.swing.JFrame {
         setAlwaysOnTop(onTop.isSelected());
     }//GEN-LAST:event_onTopStateChanged
 
+    private void jLabel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MousePressed
+        _parent.showProdConf();
+    }//GEN-LAST:event_jLabel8MousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane autoContainer;
     private javax.swing.JLabel bttCompile;
@@ -270,9 +274,7 @@ public class AutoViewer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

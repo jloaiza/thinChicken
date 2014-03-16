@@ -34,7 +34,7 @@ public class JState implements Comparable<JState>{
         
         _label.setBounds(pX, pY, STATE_SIZE, STATE_SIZE);
         _clickPoint = new Point(0, 0);
-        addListener();
+        //addListener();
     }
     
     public void moveMe(int pX, int pY){

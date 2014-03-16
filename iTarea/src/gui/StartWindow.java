@@ -119,9 +119,7 @@ public final class StartWindow extends javax.swing.JFrame {
         bttOpenEntry = new javax.swing.JLabel();
         bttSaveEntry = new javax.swing.JLabel();
         bttOpenAuto = new javax.swing.JLabel();
-        bttEditAuto = new javax.swing.JLabel();
-        bttCleanAuto = new javax.swing.JLabel();
-        bttSaveAuto = new javax.swing.JLabel();
+        bttSetProd = new javax.swing.JLabel();
         bttCompile = new javax.swing.JLabel();
         lblEntry = new javax.swing.JLabel();
         lblExit = new javax.swing.JLabel();
@@ -154,6 +152,7 @@ public final class StartWindow extends javax.swing.JFrame {
 
         jLabel2.setText("Archivo de producciones:");
 
+        txProdDir.setEditable(false);
         txProdDir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txProdDirActionPerformed(evt);
@@ -256,33 +255,17 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttOpenAuto);
-        bttOpenAuto.setBounds(564, 41, 27, 24);
+        bttOpenAuto.setBounds(573, 41, 27, 24);
 
-        bttEditAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttEdit.png"))); // NOI18N
-        bttEditAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        bttEditAuto.addMouseListener(new java.awt.event.MouseAdapter() {
+        bttSetProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttP.png"))); // NOI18N
+        bttSetProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttSetProd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bttEditAutoMouseClicked(evt);
+                bttSetProdMouseClicked(evt);
             }
         });
-        jLayeredPane1.add(bttEditAuto);
-        bttEditAuto.setBounds(513, 41, 27, 24);
-
-        bttCleanAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttClean.png"))); // NOI18N
-        bttCleanAuto.setToolTipText("");
-        bttCleanAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        bttCleanAuto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bttCleanAutoMouseClicked(evt);
-            }
-        });
-        jLayeredPane1.add(bttCleanAuto);
-        bttCleanAuto.setBounds(468, 41, 27, 24);
-
-        bttSaveAuto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttSave.png"))); // NOI18N
-        bttSaveAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLayeredPane1.add(bttSaveAuto);
-        bttSaveAuto.setBounds(613, 41, 27, 24);
+        jLayeredPane1.add(bttSetProd);
+        bttSetProd.setBounds(538, 41, 22, 24);
 
         bttCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttCompile.png"))); // NOI18N
         bttCompile.setToolTipText("");
@@ -327,7 +310,7 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttSlider2);
-        bttSlider2.setBounds(626, 210, 11, 22);
+        bttSlider2.setBounds(628, 210, 11, 22);
 
         bttSlider1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1btt.png"))); // NOI18N
         bttSlider1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -356,7 +339,7 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttDownS2);
-        bttDownS2.setBounds(620, 354, 20, 20);
+        bttDownS2.setBounds(622, 354, 20, 20);
 
         bttUpS2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider2U.png"))); // NOI18N
         bttUpS2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -366,7 +349,7 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttUpS2);
-        bttUpS2.setBounds(620, 70, 20, 19);
+        bttUpS2.setBounds(622, 70, 20, 19);
 
         bttRightS1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1R.png"))); // NOI18N
         bttRightS1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -378,7 +361,7 @@ public final class StartWindow extends javax.swing.JFrame {
         jLayeredPane1.add(bttRightS1);
         bttRightS1.setBounds(600, 355, 18, 18);
 
-        bttAutoViewer.setText("Viewer");
+        bttAutoViewer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/bttView.png"))); // NOI18N
         bttAutoViewer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bttAutoViewer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -386,7 +369,7 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(bttAutoViewer);
-        bttAutoViewer.setBounds(400, 41, 46, 21);
+        bttAutoViewer.setBounds(613, 41, 30, 24);
 
         bttLeftS1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1L.png"))); // NOI18N
         bttLeftS1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -400,7 +383,7 @@ public final class StartWindow extends javax.swing.JFrame {
 
         slider2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider2.png"))); // NOI18N
         jLayeredPane1.add(slider2);
-        slider2.setBounds(620, 69, 20, 304);
+        slider2.setBounds(622, 69, 20, 304);
 
         slider1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/slider1.png"))); // NOI18N
         jLayeredPane1.add(slider1);
@@ -484,15 +467,6 @@ public final class StartWindow extends javax.swing.JFrame {
             PathRegister.ENTRY_PATH = path;
         }
     }//GEN-LAST:event_bttSaveEntryMouseClicked
-
-    private void bttEditAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttEditAutoMouseClicked
-        confProd.setVisible(true);
-        confProd.setEnabled(true);
-    }//GEN-LAST:event_bttEditAutoMouseClicked
-
-    private void bttCleanAutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttCleanAutoMouseClicked
-        
-    }//GEN-LAST:event_bttCleanAutoMouseClicked
 
     private void bttLeftS1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttLeftS1MouseClicked
         moveHorizontalAutomata(-SLIDER_MOVE_SIZE);
@@ -615,7 +589,7 @@ public final class StartWindow extends javax.swing.JFrame {
                 return;
             }
         }
-        String path = saveFile(evt.isShiftDown(), "Guardar producciones", PathRegister.PRODUCTIONS_PATH, "producciones.txt", textProd.getText());
+        String path = saveFile(evt.isShiftDown(), "Guardar producciones", PathRegister.PRODUCTIONS_PATH, "generado.txt", textProd.getText());
         if (path != null){
             PathRegister.PRODUCTIONS_PATH = path;
         }
@@ -653,6 +627,22 @@ public final class StartWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_bttAbrirActionPerformed
+
+    private void bttSetProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttSetProdMouseClicked
+        showProdConf();
+    }//GEN-LAST:event_bttSetProdMouseClicked
+    
+    private boolean isAllLoaded(){
+        boolean b1 = PathRegister.AUTOMATA_PATH.compareTo("") != 0;
+        boolean b2 = PathRegister.ENTRY_PATH.compareTo("") != 0;
+        boolean b3 = PathRegister.PRODUCTIONS_PATH.compareTo("") != 0;
+        return b1 && b2 && b3;
+    }
+    
+    protected void showProdConf(){
+        confProd.setVisible(true);
+        confProd.setEnabled(true);
+    }
     
     private void clearExitAndProdText(){
         textExit.setText("");
@@ -702,8 +692,12 @@ public final class StartWindow extends javax.swing.JFrame {
     }
     
     protected void compile(boolean pDebugMode){
-        clearExitAndProdText();
-        Facade.getInstance().evaluateEntry(pDebugMode);
+        if (isAllLoaded()){
+            clearExitAndProdText();
+            Facade.getInstance().evaluateEntry(pDebugMode);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se han cargado todos los archivos necesarios para realizar la compilación, por favor revise el archivo de entrada, autómata y producciones.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     protected void showAutoAgain(){
@@ -804,18 +798,16 @@ public final class StartWindow extends javax.swing.JFrame {
     private javax.swing.JLabel bkg;
     private javax.swing.JButton bttAbrir;
     private javax.swing.JLabel bttAutoViewer;
-    private javax.swing.JLabel bttCleanAuto;
     private javax.swing.JLabel bttCompile;
     private javax.swing.JLabel bttDownS2;
-    private javax.swing.JLabel bttEditAuto;
     private javax.swing.JLabel bttLeftS1;
     private javax.swing.JLabel bttOpenAuto;
     private javax.swing.JLabel bttOpenEntry;
     private javax.swing.JLabel bttRightS1;
-    private javax.swing.JLabel bttSaveAuto;
     private javax.swing.JLabel bttSaveEntry;
     private javax.swing.JLabel bttSaveExit;
     private javax.swing.JLabel bttSaveProd;
+    private javax.swing.JLabel bttSetProd;
     private javax.swing.JLabel bttSlider1;
     private javax.swing.JLabel bttSlider2;
     private javax.swing.JLabel bttUpS2;
